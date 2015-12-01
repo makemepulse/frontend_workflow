@@ -30,8 +30,8 @@ else {
       Lib.template.create(options)
       break;
     }
-    case 'symlink': {
-      Lib.symlink(options)
+    case 'copy': {
+      Lib.copy(options)
       break;
     }
     default:
