@@ -1,0 +1,56 @@
+global:
+  src_path: ./app
+  public_path: ./public
+
+
+###############
+#  Stylus
+###############
+stylus:
+  files:
+    - "{{ &global.src_path }}/index.styl {{ &global.public_path }}/main.css"
+
+
+
+###############
+#  Babelify
+###############
+babelify: &babelify
+
+
+
+
+###############
+#  Babelify
+###############
+partialify: &partialify
+  extensions:
+    - svg
+
+
+
+
+###############
+#  Browserify
+###############
+browserify:
+  files:
+    - "{{ &global.src_path }}/index.js {{ &global.public_path }}/main.js"
+  options:
+    extensions:
+      - .js
+      - .es
+  babelify: *babelify
+  partialify: *partialify
+
+
+
+
+
+###############
+#  Watch
+###############
+watch:
+  files:
+    - "{{ &global.public_path }}/**/*"
+  options:
