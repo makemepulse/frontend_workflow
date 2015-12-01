@@ -26,12 +26,13 @@ if (Tasks.hasOwnProperty(action)) {
 else {
 
   switch (action) {
-    case 'template': {
-      Lib.template.create(options)
+    case 'setup':
+    case 'setup:run': {
+      Lib.setup.run(options)
       break;
     }
-    case 'copy': {
-      Lib.copy(options)
+    case 'template': {
+      Lib.template.create(options)
       break;
     }
     default:
