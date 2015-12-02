@@ -6,14 +6,12 @@ const colors = require('colors/safe')
 const Print = (function(){
 
   const _log = function(value, withDate, color) {
-    color    = color || null
+    color    = color || 'white'
     withDate = withDate || false
-    if (color && withDate) {
+    if (withDate) {
       console.log(colors['cyan'](_time()), colors[color](`${value}`))
-    } else if (color) {
-      console.log(colors[color](`${value}`))
     } else {
-      console.log(value)
+      console.log(colors[color](`${value}`))
     }
   }
 

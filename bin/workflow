@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+'use strict'
+
+const fs     = require('fs-extra')
+const subarg = require('subarg')
+const exec   = require('child_process').exec
+
+const requiredir = require('../lib/require_dir')
+const Lib        = requiredir(`lib`)
+const options    = subarg(process.argv.slice(2), {})
+const action     = options._[0]
+
+let pkg = fs.readJsonSync(`${process.cwd()}/package.json`)
+if (pkg.frontend_workflow) {
+  options.workflow_path = pkg.frontend_workflow.path || process.cwd()
+  options.workflow_name = pkg.frontend_workflow.name || 'frontend_workflow'
+}
+
+switch (action) {
+  case 'setup':
+  case 'setup:run': {
+    Lib.setup.run(options)
+    break;
+  }
+  default: {
+    let cli = exec(`cd ${options.workflow_path} && node ./${options.workflow_name} ${action}`)
+
+    cli.stdout.setEncoding('utf-8')
+
+    cli.stdout.on('data', function(data) {
+      Lib.print.log(Lib.print.clean(data), false, 'grey')
+    })
+
+    cli.stderr.on('data', function(data) {
+      Lib.print.log(Lib.print.clean(data), false, 'red')
+    })
+  }
+}
