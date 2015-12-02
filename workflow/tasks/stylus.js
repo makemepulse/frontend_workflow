@@ -1,16 +1,33 @@
 #!/usr/bin/env node
 'use strict';
 
-const Print = require('./../lib/Print')
-const exec  = require('child_process').exec;
+const Print   = require('./../lib/Print')
+const exec    = require('child_process').exec
+const extname = require('path').extname
+const fs      = require('fs')
 
 const Stylus = function(options) {
 
-  var input  = options.i;
-  var output = options.o;
+  let input  = options.i;
+  let output = options.o;
 
-  var cmd    = `${__dirname}/../node_modules/.bin/stylus`;
-  var params = [cmd];
+  let outputExtname = extname(output)
+  if (outputExtname !== '.css') {
+    output = output.replace(outputExtname, '')
+  } else {
+    outputExtname = null
+  }
+
+  var applyExtname = function() {
+    if (outputExtname) {
+      try {
+        fs.renameSync(output, output+outputExtname)
+      } catch(e) {}
+    }
+  }
+
+  let cmd    = `${__dirname}/../node_modules/.bin/stylus`;
+  let params = [cmd];
 
   if (options.sourcemaps) { params.push("--sourcemap-inline"); }
   if (options.watch)      { params.push("--watch"); }
@@ -20,18 +37,17 @@ const Stylus = function(options) {
   params.push(`${__dirname}/../node_modules/autoprefixer-stylus`);
   params.push("--use");
   params.push(`${__dirname}/../node_modules/rupture`);
-
-  params.push("<");
   params.push(input);
-  params.push(">");
+  params.push("--out");
   params.push(output);
 
-  var cli = exec(params.join(' '))
+  let cli = exec(params.join(' '))
 
   cli.stdout.setEncoding('utf-8')
   cli.stdout.on('data', function(data) {
     var data = Print.clean(data.toString('utf-8'))
     Print.log(`[Stylus] ${data}`, true, 'magenta')
+    applyExtname()
   });
 
   cli.stderr.on('data', function(data) {
@@ -41,6 +57,7 @@ const Stylus = function(options) {
 
   cli.on('close', function(code){
     Print.log(`[Stylus] child process exited with code ${code}`, true, 'magenta')
+    applyExtname()
   });
 
 }
