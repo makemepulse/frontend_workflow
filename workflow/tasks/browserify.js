@@ -37,8 +37,8 @@ const Browserify = function(options) {
   /**
    * Add transforms
    */
-  b.transform(babelify.configure(config.babelify));
-  b.transform(aliasify);
+  b.transform(babelify, config.babelify);
+  b.transform(aliasify, config.aliasify);
   b.transform(partialify.alsoAllow(config.partialify.extensions));
 
   function bundle(){

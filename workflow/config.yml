@@ -16,6 +16,17 @@ stylus:
 #  Babelify
 ###############
 babelify: &babelify
+  presets:
+    - es2015
+
+
+
+###############
+#  Aliasify
+###############
+aliasify: &aliasify
+  aliases:
+    sections: "./app/sections"
 
 
 
@@ -42,6 +53,7 @@ browserify:
       - .es
   babelify: *babelify
   partialify: *partialify
+  aliasify: *aliasify
 
 
 
