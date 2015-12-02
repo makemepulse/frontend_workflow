@@ -3,9 +3,10 @@
 
 const fs = require('fs')
 
-const RequireDir = function(dir) {
+const RequireDir = function(dir, absolute) {
+  if (typeof absolute === 'undefined') absolute = false
+  if (!absolute) { dir = `${__dirname}/../${dir}` }
 
-  var dir    = `${__dirname}/../${dir}` 
   var files  = fs.readdirSync( `${dir}` )
   var result = {}
   for (var i = 0; i < files.length; i++) {

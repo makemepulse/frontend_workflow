@@ -3,7 +3,7 @@
 
 const fs     = require('fs-extra')
 const subarg = require('subarg')
-const exec   = require('child_process').exec
+const spawn  = require('child_process').spawn
 
 const requiredir = require('../lib/require_dir')
 const Lib        = requiredir(`lib`)
@@ -22,17 +22,20 @@ switch (action) {
     Lib.setup.run(options)
     break;
   }
+  case 'commands-list': {
+    Lib.setup.commandList(options)
+    break;
+  }
   default: {
-    let cli = exec(`cd ${options.workflow_path} && node ./${options.workflow_name} ${action}`)
 
-    cli.stdout.setEncoding('utf-8')
+    try {
+      const Tasks = requiredir(`${options.workflow_path}/${options.workflow_name}/tasks`, true)
+      if (Tasks.hasOwnProperty(action)) {
+        spawn('node', [`${options.workflow_path}/${options.workflow_name}`, action], {stdio:'inherit'})
+        return
+      }
+    } catch(e) {}
 
-    cli.stdout.on('data', function(data) {
-      Lib.print.log(Lib.print.clean(data), false, 'grey')
-    })
-
-    cli.stderr.on('data', function(data) {
-      Lib.print.log(Lib.print.clean(data), false, 'red')
-    })
+    spawn('node', [`${options.workflow_path}/${options.workflow_name}`, action], {stdio:'inherit'})
   }
 }

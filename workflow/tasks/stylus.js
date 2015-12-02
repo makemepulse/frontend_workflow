@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-const Print  = require('./../lib/Print')
+const Print = require('./../lib/Print')
+const spawn = require('child_process').spawn;
 
 const Stylus = function(options) {
 
@@ -23,7 +24,6 @@ const Stylus = function(options) {
   params.push("--out");
   params.push(output);
 
-  var spawn = require('child_process').spawn;
   var cli   = spawn(cmd, params);
 
   cli.stdout.on('data', function(data) {

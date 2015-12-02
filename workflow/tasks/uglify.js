@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-const Print  = require('./../lib/Print')
+const spawn = require('child_process').spawn;
+const Print = require('./../lib/Print')
 
 const Uglify = function(options) {
   let input  = options.i;
@@ -16,7 +17,6 @@ const Uglify = function(options) {
   params.push("--output");
   params.push(__dirname + '/..' +output);
 
-  let spawn = require('child_process').spawn;
   let cli   = spawn(cmd, params);
 
   cli.stdout.on('data', function(data) {

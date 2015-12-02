@@ -16,8 +16,5 @@
   },
   "bin": {
     "workflow": "./bin/workflow"
-  },
-  "frontend_workflow": {
-    "name": "_helloworld"
   }
 }

@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 'use strict'
 
-const colors = require('colors/safe')
 
 const Print = (function(){
 
+  const _colors = require('colors/safe')
+
   const _log = function(value, withDate, color) {
-    color    = color || 'white'
+    color    = color || null
     withDate = withDate || false
-    if (withDate) {
-      console.log(colors['cyan'](_time()), colors[color](`${value}`))
+    if (color) {
+      if (withDate) console.log(colors['cyan'](_time()), colors[color](`${value}`))
+      else console.log(colors[color](`${value}`))
     } else {
-      console.log(colors[color](`${value}`))
+      console.log(value)
     }
   }
 
@@ -35,7 +37,8 @@ const Print = (function(){
   return {
     log: _log,
     time: _time,
-    clean: _clean
+    clean: _clean,
+    colors: _colors
   }
 
 })()
