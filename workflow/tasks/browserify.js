@@ -28,6 +28,12 @@ const Browserify = function(options) {
    */
   var b = browserify(config.options);
   b.on('bundle', onBundle);
+  b.on('label', function(e){
+    const i = input.replace('./', '');
+    if (e.match(i)) {
+      Print.log(`[Browserify] Compiled ${output}`, true, 'magenta')
+    }
+  });
 
   if (options.watch) {
     b = watchify(b);
@@ -64,7 +70,6 @@ const Browserify = function(options) {
 
   function onBundle(){
     var inputDisplay = input.replace(__dirname + '/../', '');
-    Print.log(`[Browserify] Compile ${inputDisplay}`, true, 'magenta')
   }
 
   bundle();
