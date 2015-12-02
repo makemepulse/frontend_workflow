@@ -17,5 +17,8 @@
   },
   "bin": {
     "workflow": "./bin/workflow"
+  },
+  "frontend_workflow": {
+    "path": "./hello"
   }
 }

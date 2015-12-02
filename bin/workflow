@@ -12,11 +12,11 @@ const action     = options._[0]
 
 let pkg = fs.readJsonSync(`${process.cwd()}/package.json`)
 if (pkg.frontend_workflow) {
-  options.workflow_path = pkg.frontend_workflow.path
-  options.workflow_name = pkg.frontend_workflow.name
+  options.path = pkg.frontend_workflow.path
 }
+options.path = options._[1] || options.path
 
-if (!options.workflow_name && !options.workflow_name) {
+if (!options.path) {
   Lib.print.log(`Workflow name and path are missing!`, true, 'yellow')
   return
 }
@@ -35,7 +35,7 @@ switch (action) {
 
     let args = process.argv.join(' ').split(action)[1].replace(/^(\s|\n)+|(\s|\n)+$/g, '').split(' ')
     args.unshift(action)
-    args.unshift(`${options.workflow_path}/${options.workflow_name}`)
+    args.unshift(`${options.path}`)
 
     let params = []
     for (var i = 0; i < args.length; i++) {
@@ -45,7 +45,7 @@ switch (action) {
     }
 
     try {
-      const Tasks = requiredir(`${options.workflow_path}/${options.workflow_name}/tasks`, true)
+      const Tasks = requiredir(`${options.path}/tasks`, true)
       if (Tasks.hasOwnProperty(action)) {
         spawn('node', params, {stdio:'inherit'})
         return
