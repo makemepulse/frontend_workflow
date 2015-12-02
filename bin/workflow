@@ -33,14 +33,25 @@ switch (action) {
   }
   default: {
 
+    let args = process.argv.join(' ').split(action)[1].replace(/^(\s|\n)+|(\s|\n)+$/g, '').split(' ')
+    args.unshift(action)
+    args.unshift(`${options.workflow_path}/${options.workflow_name}`)
+
+    let params = []
+    for (var i = 0; i < args.length; i++) {
+      if (!args[i].match(/workflow_/gi)) {
+        params.push(args[i])
+      }
+    }
+
     try {
       const Tasks = requiredir(`${options.workflow_path}/${options.workflow_name}/tasks`, true)
       if (Tasks.hasOwnProperty(action)) {
-        spawn('node', [`${options.workflow_path}/${options.workflow_name}`, action], {stdio:'inherit'})
+        spawn('node', params, {stdio:'inherit'})
         return
       }
     } catch(e) {}
 
-    spawn('node', [`${options.workflow_path}/${options.workflow_name}`, action], {stdio:'inherit'})
+    spawn('node', params, {stdio:'inherit'})
   }
 }
