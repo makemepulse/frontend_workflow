@@ -2,7 +2,7 @@
 'use strict';
 
 const Print = require('./../lib/Print')
-const spawn = require('child_process').spawn;
+const exec  = require('child_process').exec;
 
 const Stylus = function(options) {
 
@@ -10,7 +10,7 @@ const Stylus = function(options) {
   var output = options.o;
 
   var cmd    = `${__dirname}/../node_modules/.bin/stylus`;
-  var params = [];
+  var params = [cmd];
 
   if (options.sourcemaps) { params.push("--sourcemap-inline"); }
   if (options.watch)      { params.push("--watch"); }
@@ -20,12 +20,15 @@ const Stylus = function(options) {
   params.push(`${__dirname}/../node_modules/autoprefixer-stylus`);
   params.push("--use");
   params.push(`${__dirname}/../node_modules/rupture`);
+
+  params.push("<");
   params.push(input);
-  params.push("--out");
+  params.push(">");
   params.push(output);
 
-  var cli   = spawn(cmd, params);
+  var cli = exec(params.join(' '))
 
+  cli.stdout.setEncoding('utf-8')
   cli.stdout.on('data', function(data) {
     var data = Print.clean(data.toString('utf-8'))
     Print.log(`[Stylus] ${data}`, true, 'magenta')
