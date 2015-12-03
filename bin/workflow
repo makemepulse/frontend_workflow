@@ -10,10 +10,12 @@ const Lib        = requiredir(`lib`)
 const options    = subarg(process.argv.slice(2), {})
 const action     = options._[0]
 
-let pkg = fs.readJsonSync(`${process.cwd()}/package.json`)
-if (pkg.frontend_workflow) {
-  options.path = pkg.frontend_workflow.path
-}
+try {
+  let pkg = fs.readJsonSync(`${process.cwd()}/package.json`)
+  if (pkg.frontend_workflow) {
+    options.path = pkg.frontend_workflow.path
+  }
+} catch(e) {}
 options.path = options._[1] || options.path
 
 if (!options.path) {
