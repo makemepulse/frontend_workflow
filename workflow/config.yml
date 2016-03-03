@@ -139,3 +139,28 @@ uglify:
   files:
     - "{{ &global.scripts_path }}/main.js {{ &global.scripts_path }}/main.js"
     - "{{ &global.scripts_path }}/vendor.js {{ &global.scripts_path }}/vendor.js"
+
+
+
+
+
+
+##############
+# TEMPLATE
+#
+# eg : node ./workflow section MySectionName
+##############
+template:
+  section:
+    output: index
+    destination_path: "{{ &global.src_path }}/sections"
+    files:
+      - section.html
+      - stylus/section.styl
+      - js
+  component:
+    destination_path: "{{ &global.src_path }}/component"
+    files:
+      - stylus/section.styl
+      - js/section.js
+
