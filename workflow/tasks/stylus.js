@@ -26,7 +26,7 @@ const Stylus = function(options) {
     }
   }
 
-  const cmd    = `${__dirname}/../node_modules/.bin/stylus`;
+  const cmd    = `${__dirname}/../../node_modules/.bin/stylus`;
   const params = [cmd];
 
   if (options.sourcemaps) { params.push("--sourcemap-inline"); }
@@ -34,11 +34,11 @@ const Stylus = function(options) {
   if (options.compress)   { params.push("--compress"); }
   params.push("--include-css");
   params.push("--use");
-  params.push(`${__dirname}/../node_modules/autoprefixer-stylus`);
+  params.push(`${__dirname}/../../node_modules/autoprefixer-stylus`);
   // params.push(`--with`);
   // params.push(`"{ browsers: ['ie 7', 'ie 8', 'ie 9', 'ie 10', 'ie 11'] }"`);
   params.push("--use");
-  params.push(`${__dirname}/../node_modules/rupture`);
+  params.push(`${__dirname}/../../node_modules/rupture`);
   params.push(input);
   params.push("--out");
   params.push(output);

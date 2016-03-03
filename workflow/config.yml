@@ -1,6 +1,10 @@
 global:
-  src_path: ./app
-  public_path: ./public
+  src_path: './app'
+  public_path: './public'
+  styles_path: "{{ &global.public_path }}"
+  scripts_path: "{{ &global.public_path }}"
+
+
 
 
 ###############
@@ -8,7 +12,19 @@ global:
 ###############
 stylus:
   files:
-    - "{{ &global.src_path }}/index.styl {{ &global.public_path }}/main.css"
+    - "{{ &global.src_path }}/index.styl {{ &global.styles_path }}/main.css"
+
+
+
+
+###############
+#  SASS
+###############
+sass:
+  files:
+    - "{{ &global.src_path }}/index.sass {{ &global.styles_path }}/main.css"
+
+
 
 
 
@@ -16,8 +32,9 @@ stylus:
 #  Babelify
 ###############
 babelify: &babelify
-  presets:
-    - es2015
+  modules: common
+  compact: false
+  comments: false
 
 
 
@@ -26,17 +43,27 @@ babelify: &babelify
 ###############
 aliasify: &aliasify
   aliases:
+    core: "./app/scripts/core"
     sections: "./app/sections"
+    modals: "./app/modals"
+    components: "./app/components"
+    common: "./app/scripts/common"
+    mixins: "./app/scripts/mixins"
+    observers: "./app/observers"
+    mediators: "./app/mediators"
+
 
 
 
 
 ###############
-#  Babelify
+#  Partialify
 ###############
 partialify: &partialify
   extensions:
     - svg
+    - txt
+
 
 
 
@@ -46,8 +73,11 @@ partialify: &partialify
 ###############
 browserify:
   files:
-    - "{{ &global.src_path }}/index.js {{ &global.public_path }}/main.js"
+    - "{{ &global.src_path }}/index.js {{ &global.scripts_path }}/main.js"
+    - "{{ &global.src_path }}/vendor/index.js {{ &global.scripts_path }}/vendor.js"
   options:
+    cache: {}
+    packageCache: {}
     extensions:
       - .js
       - .es
@@ -62,7 +92,31 @@ browserify:
 ###############
 #  Watch
 ###############
-watch:
+watch: &watch
   files:
     - "{{ &global.public_path }}/**/*"
-  options:
+
+
+
+
+
+
+###############
+#  Server (Browser Sync)
+###############
+server:
+  <<: *watch
+  proxy: http://localhost:3000/
+  open: false
+
+
+
+
+
+###############
+#  Uglify
+###############
+uglify:
+  files:
+    - "{{ &global.scripts_path }}/main.js {{ &global.scripts_path }}/main.js"
+    - "{{ &global.scripts_path }}/vendor.js {{ &global.scripts_path }}/vendor.js"
