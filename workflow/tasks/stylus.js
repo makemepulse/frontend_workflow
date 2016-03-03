@@ -36,7 +36,7 @@ const Stylus = function(options) {
   params.push("--use");
   params.push(`${__dirname}/../../node_modules/autoprefixer-stylus`);
   params.push(`--with`);
-  params.push(`"{ browsers: ['ie 9', 'ie 10', 'ie 11'] }"`);
+  params.push(`'${JSON.stringify(options.config.autoprefixer)}'`);
   params.push("--use");
   params.push(`${__dirname}/../../node_modules/rupture`);
   params.push(input);

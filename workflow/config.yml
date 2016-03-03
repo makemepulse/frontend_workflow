@@ -9,8 +9,18 @@ global:
 
 ###############
 #  Stylus
+#
+#  Autoprefixer - Browser prefix
+#  -webkit- prefix add 'safari 7'
+#  -ms- prefix add 'ie 9'
+#  -moz- prefix add 'firefox 20'
 ###############
 stylus:
+  autoprefixer:
+    browsers:
+      - 'ie 9'
+      - 'ie 10'
+      - 'ie 11'
   files:
     - "{{ &global.src_path }}/index.styl {{ &global.styles_path }}/main.css"
 
