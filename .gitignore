@@ -4,3 +4,6 @@
 *.mp4
 node_modules
 npm-debug.*
+public/main.css
+public/main.js
+public/vendor.js
