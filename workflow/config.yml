@@ -36,6 +36,15 @@ sass:
 
 
 
+###############
+#  POSTCSS
+###############
+postcss:
+  files:
+    - "{{ &global.src_path }}/index.css {{ &global.styles_path }}/main.css"
+
+
+
 
 
 ###############
