@@ -1,31 +1,33 @@
 #!/usr/bin/env node
 'use strict';
 
-const spawn = require('child_process').spawn;
+const exec = require('child_process').exec;
 const Print = require('./../lib/Print')
 
 const Uglify = function(options) {
-  let input  = options.i;
-  let output = options.o;
+  const input  = options.i;
+  const output = options.o;
 
-  let cmd    = __dirname + '/../node_modules/.bin/uglifyjs';
-  let params = [];
+  const cmd    = __dirname + '/../node_modules/.bin/uglifyjs';
+  const params = [];
 
-  params.push(__dirname + '/..' + input);
+  params.push(cmd)
+  params.push(input);
   params.push('-c')
   params.push('--mangle')
   params.push("--output");
-  params.push(__dirname + '/..' +output);
+  params.push(output);
 
-  let cli   = spawn(cmd, params);
+  const cli = exec(params.join(' '))
 
+  cli.stdout.setEncoding('utf-8')
   cli.stdout.on('data', function(data) {
-    var data = Print.clean(data.toString('utf-8'))
+    data = Print.clean(data.toString('utf-8'))
     Print.log(`[Uglify] ${data}`, true, 'magenta')
   });
 
   cli.stderr.on('data', function(data) {
-    var data = Print.clean(data.toString('utf-8'))
+    data = Print.clean(data.toString('utf-8'))
     Print.log(`[Uglify] ${data}`, true, 'red')
   });
 

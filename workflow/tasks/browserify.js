@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict'
 
-const fs         = require('fs')
+const fs         = require('fs-extra')
+const path       = require('path')
 const browserify = require('browserify')
 const watchify   = require('watchify')
 const aliasify   = require('aliasify')
@@ -10,11 +11,13 @@ const babelify   = require('babelify')
 
 const Print      = require('./../lib/Print')
 
+
 const Browserify = function(options) {
 
-  const config = options.config;
-  const input  = options.i;
-  const output = options.o;
+  const config    = options.config;
+  const input     = options.i;
+  const output    = options.o;
+  const tmpOutput = `${__dirname}/../tmp/${path.basename(options.o)}`;
 
   config.options.debug   = options.sourcemaps;
   config.options.entries = [input];
@@ -24,14 +27,20 @@ const Browserify = function(options) {
   config.babelify.comments = !options.compress;
 
   /**
+   *
+   */
+  fs.ensureDirSync(path.dirname(tmpOutput))
+
+  /**
    * Configure browserify
    */
   var b = browserify(config.options);
-  b.on('bundle', onBundle);
   b.on('label', function(e){
     const i = input.replace('./', '');
     if (e.match(i)) {
-      Print.log(`[Browserify] Compiled ${output}`, true, 'magenta')
+      fs.move(tmpOutput, output, { clobber: true }, ()=>{
+        Print.log(`[Browserify] Compiled ${output}`, true, 'magenta')
+      })
     }
   });
 
@@ -51,25 +60,20 @@ const Browserify = function(options) {
     var bndle = b.bundle();
     bndle     = bndle.on('error', onError);
 
-    if (output) {
-      bndle.pipe(fs.createWriteStream(output));
+    if (tmpOutput) {
+      bndle.pipe(fs.createWriteStream(tmpOutput));
     } else {
       bndle.pipe(process.stdout);
     }
   }
 
   function onUpdate(){
-    var inputDisplay = input.replace(__dirname + '/../', '');
     bundle();
   }
 
   function onError(err){
     Print.log('[Browserify] Error', true, 'red')
     Print.log(err.message, true, 'red');
-  }
-
-  function onBundle(){
-    var inputDisplay = input.replace(__dirname + '/../', '');
   }
 
   bundle();

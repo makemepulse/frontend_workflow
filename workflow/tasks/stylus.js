@@ -8,7 +8,7 @@ const fs      = require('fs')
 
 const Stylus = function(options) {
 
-  let input  = options.i;
+  const input  = options.i;
   let output = options.o;
 
   let outputExtname = extname(output)
@@ -26,8 +26,8 @@ const Stylus = function(options) {
     }
   }
 
-  let cmd    = `${__dirname}/../node_modules/.bin/stylus`;
-  let params = [cmd];
+  const cmd    = `${__dirname}/../node_modules/.bin/stylus`;
+  const params = [cmd];
 
   if (options.sourcemaps) { params.push("--sourcemap-inline"); }
   if (options.watch)      { params.push("--watch"); }
@@ -35,23 +35,25 @@ const Stylus = function(options) {
   params.push("--include-css");
   params.push("--use");
   params.push(`${__dirname}/../node_modules/autoprefixer-stylus`);
+  // params.push(`--with`);
+  // params.push(`"{ browsers: ['ie 7', 'ie 8', 'ie 9', 'ie 10', 'ie 11'] }"`);
   params.push("--use");
   params.push(`${__dirname}/../node_modules/rupture`);
   params.push(input);
   params.push("--out");
   params.push(output);
 
-  let cli = exec(params.join(' '))
+  const cli = exec(params.join(' '))
 
   cli.stdout.setEncoding('utf-8')
   cli.stdout.on('data', function(data) {
-    var data = Print.clean(data.toString('utf-8'))
+    data = Print.clean(data.toString('utf-8'))
     Print.log(`[Stylus] ${data}`, true, 'magenta')
     applyExtname()
   });
 
   cli.stderr.on('data', function(data) {
-    var data = Print.clean(data.toString('utf-8'))
+    data = Print.clean(data.toString('utf-8'))
     Print.log(`[Stylus] ${data}`, true, 'red')
   });
 
