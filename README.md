@@ -15,6 +15,8 @@ Available tasks :
 * [`stylus`](https://github.com/stylus/stylus)
 
 
+### Tasks parameters 
+
 Every tasks have the same parameters :
 
 * `-m` to compress the file
@@ -26,9 +28,28 @@ You can add more parameters inside `workflow/lib/args.js`.
 Every task configurations are located inside `workflow/config.yml`.
 
 
+### Tasks execution
+
+```
+    node ./workflow {{ task_name }} [-paremeters]
+```
+
+```
+    node ./workflow stylus -w -m -s
+```
+
+You can use `npm` directly
+
+```
+    npm run stylus:compile
+```
+
+
 ## Template
 
 You can create template file directly inside `workflow/templates/{{ extension_name }}`.
+
+### Template configuration
 
 Inside `config.yml`, you configure your template generation.
 
@@ -60,6 +81,8 @@ template:
 
 `files` are templates to use to generate files. You can indicate an extension, a filename or a path relative to the template directory
 
+
+### Template generation
 
 To generate a template :
 
