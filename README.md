@@ -96,7 +96,7 @@ Exemple:
     node ./workflow section MySectionName
 ```
     
-You can use `npm`directly
+You can use `npm` directly
 
 ```    
     npm run template section MySectionName
