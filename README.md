@@ -101,3 +101,9 @@ You can use `npm` directly
 ```    
     npm run template section MySectionName
 ```
+
+You can add more parameters
+
+```
+    npm run template section -- [ -name="MySectionName" --prefix="app" --test="HelloWorld" ]
+```
