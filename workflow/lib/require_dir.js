@@ -2,6 +2,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 
 const RequireDir = function(dir, absolute) {
   if (typeof absolute === 'undefined') absolute = false
@@ -9,9 +10,10 @@ const RequireDir = function(dir, absolute) {
 
   var files  = fs.readdirSync( `${dir}` )
   var result = {}
-  for (var i = 0; i < files.length; i++) {
-    if (fs.statSync(`${dir}/${files[i]}`).isFile()) {
-      result[files[i].split('.')[0]] = require(`${dir}/${files[i]}`)
+  for (var pth, i = 0; i < files.length; i++) {
+    pth = `${dir}/${files[i]}`
+    if (fs.statSync(pth).isFile() && path.extname(pth).match(/\.js$/i)) {
+      result[files[i].split('.')[0]] = require(pth)
     }
   }
 
