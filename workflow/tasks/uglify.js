@@ -8,7 +8,7 @@ const Uglify = function(options) {
   const input  = options.i;
   const output = options.o;
 
-  const cmd    = __dirname + '/../node_modules/.bin/uglifyjs';
+  const cmd    = __dirname + '/../../node_modules/.bin/uglifyjs';
   const params = [];
 
   params.push(cmd)
@@ -28,7 +28,7 @@ const Uglify = function(options) {
 
   cli.stderr.on('data', function(data) {
     data = Print.clean(data.toString('utf-8'))
-    Print.log(`[Uglify] ${data}`, true, 'red')
+    Print.log(`[Uglify] ${data}`, true, 'yellow')
   });
 
   cli.on('close', function(code){

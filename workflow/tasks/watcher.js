@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 
-const chokidar = require('chokidar')
-const Print    = require('./../lib/Print')
+const bs    = require('browser-sync').create()
+const Print = require('./../lib/Print')
 
 const Watch = function(options) {
 
   const pattern = options.config.files
   const params  = options.config.options
 
-  const watcher = chokidar.watch(pattern, params)
+  const watcher = bs.watch(pattern, params)
 
   watcher.on('ready', function(file) {
     Print.log('Ready to watch', true)
