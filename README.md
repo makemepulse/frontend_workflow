@@ -14,6 +14,22 @@ Available tasks :
 * [`sass`](https://github.com/sass/sass)
 * [`stylus`](https://github.com/stylus/stylus)
 
+## Important
+
+If you want to use the frontend workflow using a static server, you must disable the proxy parameter on server configuration and specify the public path where the server must be located.
+
+```
+###############
+#  Server (Browser Sync)
+###############
+server:
+  <<: *watcher
+  open: false
+  server: "{{{ global.public_path }}}"
+``` 
+
+The proxy parameter on server configuration is useful if you want use the frontend workflow on Rails. 
+
 
 ### Tasks parameters 
 
@@ -107,3 +123,5 @@ You can add more parameters
 ```
     npm run template section -- [ -name="MySectionName" --prefix="app" --test="HelloWorld" ]
 ```
+
+
