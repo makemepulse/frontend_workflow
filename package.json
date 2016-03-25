@@ -41,6 +41,7 @@
     "rupture": "^0.6.1",
     "stylus": "^0.52.4",
     "subarg": "^1.0.0",
+    "typescript": "^1.8.9",
     "uglifyjs": "^2.4.10",
     "watchify": "^3.6.1"
   }

@@ -167,6 +167,19 @@ global:
 
 ###
 #
+# Typescript
+#
+# See typescript cli documentation (https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/Compiler%20Options.md)
+#
+###
+typescript:
+  files:
+    - "{{{ global.src_path }}}/index.ts {{{ global.public_path }}}/main.js"
+
+
+
+###
+#
 # Watcher (Chokidar)
 #
 # See chokidar documentation (https://github.com/paulmillr/chokidar)
