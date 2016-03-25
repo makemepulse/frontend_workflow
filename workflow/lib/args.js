@@ -13,12 +13,14 @@ const Args = (function(){
       b: ['build', 'dist'],
       o: ['output', 'out'],
       m: ['compress', 'minify', 'min'],
-      s: ['sourcemaps']
+      s: ['sourcemaps'],
+      c: ['config_path', 'configPath']
     },
     'default': {
       sourcemaps: false,
       compress: false,
-      watch: false
+      watch: false,
+      config_path: false
     }
   })
 

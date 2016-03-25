@@ -4,13 +4,16 @@
 const Print   = require('./../lib/Print')
 const exec    = require('child_process').exec
 const fs      = require('fs')
+const path    = require('path')
+
+const POSTCSS_CLI = path.dirname(require.resolve('postcss-cli'))+'/bin/postcss'
 
 const POSTCSS = function(options) {
 
   const input  = options.i;
   const output = options.o;
 
-  var params = [`${__dirname}/../../node_modules/.bin/postcss`];
+  var params = [POSTCSS_CLI]
   if (options.sourcemaps) params.push("--map");
   if (options.watch) params.push("--watch")
 

@@ -15,10 +15,10 @@
     "watcher": "node ./workflow watcher",
     "server": "node ./workflow server",
     "uglify": "node ./workflow uglify",
-    "compile": "npm run stylus:compile & npm run browserify:compile",
-    "watch": "npm run stylus:watch & npm run browserify:watch & npm run watcher",
-    "build": "npm run stylus:build & npm run browserify:build && npm run uglify",
-    "start": "npm run stylus:watch & npm run browserify:watch & npm run server"
+    "compile": "node ./workflow stylus -s & node ./workflow browserify -s",
+    "watch": "node ./workflow stylus -s -w & node ./workflow browserify -s -w & node ./workflow watcher",
+    "build": "node ./workflow stylus -m & node ./workflow browserify -m && node ./workflow uglify",
+    "start": "node ./workflow stylus -s -w & node ./workflow browserify -s -w & node ./workflow server"
   },
   "author": "",
   "license": "ISC",

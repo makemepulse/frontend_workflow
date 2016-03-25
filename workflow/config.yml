@@ -1,166 +1,240 @@
+############################################
+#                                          #
+# This file is used to setup your workflow #
+#                                          #
+############################################
+
+############################################
+#
+# Available tasks
+#   - browserify
+#   - postcss
+#   - sass
+#   - server (BrowserSync)
+#   - stylus
+#   - uglify
+#   - watcher (BrowserSync)
+#
+# A task needs an array of files to compile
+#
+#   eg.:
+#
+#     stylus:
+#       files:
+#         - "{{{ global.src_path }}}/index.styl {{{ global.public_path }}}/main.css"
+#
+#     browserify:
+#       files:
+#         - "{{{ global.src_path }}}/index.js {{{ global.public_path }}}/main.js"
+#       options:
+#         cache: {}
+#         packageCache: {}
+#
+#
+############################################
+
+###
+#
+# You can define global varibales
+#
+# And use them inside the file
+#   eg.:
+#     destination: "{{{ global.public_path }}}"
+#
+###
 global:
   src_path: './app'
   public_path: './public'
-  styles_path: "{{ &global.public_path }}"
-  scripts_path: "{{ &global.public_path }}"
 
 
 
-
-###############
-#  Stylus
+###
 #
-#  Autoprefixer - Browser prefix
-#  -webkit- prefix add 'safari 7'
-#  -ms- prefix add 'ie 9'
-#  -moz- prefix add 'firefox 20'
-###############
-stylus:
-  autoprefixer:
-    browsers:
-      - 'ie 9'
-      - 'ie 10'
-      - 'ie 11'
-  files:
-    - "{{ &global.src_path }}/index.styl {{ &global.styles_path }}/main.css"
-
-
-
-
-###############
-#  SASS
-###############
-sass:
-  files:
-    - "{{ &global.src_path }}/index.sass {{ &global.styles_path }}/main.css"
-
-
-
-###############
-#  POSTCSS
-###############
-postcss:
-  files:
-    - "{{ &global.src_path }}/index.css {{ &global.styles_path }}/main.css"
-
-
-
-
-
-###############
-#  Babelify
-###############
-babelify: &babelify
-  modules: common
-  compact: false
-  comments: false
-
-
-
-###############
-#  Aliasify
-###############
-aliasify: &aliasify
-  aliases:
-    core: "./app/scripts/core"
-    sections: "./app/sections"
-    modals: "./app/modals"
-    components: "./app/components"
-    common: "./app/scripts/common"
-    mixins: "./app/scripts/mixins"
-    observers: "./app/observers"
-    mediators: "./app/mediators"
-
-
-
-
-
-###############
-#  Partialify
-###############
-partialify: &partialify
-  extensions:
-    - svg
-    - txt
-
-
-
-
-
-###############
-#  Browserify
-###############
-browserify:
-  files:
-    - "{{ &global.src_path }}/index.js {{ &global.scripts_path }}/main.js"
-    - "{{ &global.src_path }}/vendor/index.js {{ &global.scripts_path }}/vendor.js"
-  options:
-    cache: {}
-    packageCache: {}
-    extensions:
-      - .js
-      - .es
-  babelify: *babelify
-  partialify: *partialify
-  aliasify: *aliasify
-
-
-
-
-
-###############
-#  Watch
-###############
-watcher: &watcher
-  files:
-    - "{{ &global.public_path }}/**/*"
-
-
-
-
-
-
-###############
-#  Server (Browser Sync)
-###############
-server:
-  <<: *watcher
-  proxy: http://localhost:3000/
-  open: false
-
-
-
-
-
-###############
-#  Uglify
-###############
-uglify:
-  files:
-    - "{{ &global.scripts_path }}/main.js {{ &global.scripts_path }}/main.js"
-    - "{{ &global.scripts_path }}/vendor.js {{ &global.scripts_path }}/vendor.js"
-
-
-
-
-
-
-##############
-# TEMPLATE
+# Stylus
 #
-# eg : node ./workflow section MySectionName
-##############
-template:
-  section:
-    output: index
-    destination_path: "{{ &global.src_path }}/sections"
-    files:
-      - section.html
-      - stylus/section.styl
-      - js
-  component:
-    destination_path: "{{ &global.src_path }}/component"
-    files:
-      - stylus/section.styl
-      - js/section.js
+# See stylus documentation (http://stylus-lang.com/)
+#
+# Autoprefixer - Browser prefix
+# -webkit- prefix add 'safari 7'
+# -ms- prefix add 'ie 9'
+# -moz- prefix add 'firefox 20'
+#
+###
+#stylus:
+#  autoprefixer:
+#    browsers:
+#      - 'ie 9'
+#      - 'ie 10'
+#      - 'ie 11'
+#  files:
+#    - "{{{ global.src_path }}}/index.styl {{{ global.public_path }}}/main.css"
 
+
+
+
+####
+#
+# SASS
+#
+# See sass cli documentation (http://sass-lang.com/documentation/file.SASS_REFERENCE.html#using_sass)
+#
+###
+#sass:
+#  files:
+#    - "{{{ global.src_path }}}/index.sass {{{ global.public_path }}}/main.css"
+
+
+
+###
+#
+# POSTCSS
+#
+# See postcss documentation (https://github.com/postcss/postcss)
+#
+###
+#postcss:
+#  files:
+#    - "{{{ global.src_path }}}/index.css {{{ global.public_path }}}/main.css"
+
+
+
+####
+#
+# Babelify
+#
+# See babelify documentation (https://github.com/babel/babelify)
+#
+###
+#babelify: &babelify
+#  modules: common
+#  compact: false
+#  comments: false
+
+
+
+###
+#
+# Aliasify
+#
+# See aliasify documentation (https://github.com/benbria/aliasify)
+#
+###
+#aliasify: &aliasify
+#  aliases:
+#    sections: "./app/sections"
+#    components: "./app/components"
+#    observers: "./app/observers"
+#    mediators: "./app/mediators"
+
+
+
+###
+#
+# Partialify
+#
+# See partialify documentation (https://github.com/bclinkinbeard/partialify)
+#
+###
+#partialify: &partialify
+#  extensions:
+#    - svg
+#    - txt
+
+
+
+###
+#
+# Browserify
+#
+# See browserify documentation (https://github.com/substack/node-browserify)
+#
+###
+#browserify:
+#  files:
+#    - "{{{ global.src_path }}}/index.js {{{ global.scripts_path }}}/main.js"
+#    - "{{{ global.src_path }}}/vendor/index.js {{{ global.scripts_path }}}/vendor.js"
+#  options:
+#    cache: {}
+#    packageCache: {}
+#    extensions:
+#      - .js
+#      - .es
+#  babelify: *babelify
+#  partialify: *partialify
+#  aliasify: *aliasify
+
+
+
+###
+#
+# Watcher (Chokidar)
+#
+# See chokidar documentation (https://github.com/paulmillr/chokidar)
+#
+###
+#watcher: &watcher
+#  files:
+#    - "{{{ global.public_path }}}/**/*"
+
+
+
+###
+#
+# Server (Browser Sync)
+#
+# See browser-sync documentation (https://www.browsersync.io/docs/api/)
+#
+###
+#server:
+#  <<: *watcher
+#  server: "{{{ global.public_path }}}"
+#  open: false
+
+
+
+###
+#
+# Uglify
+#
+###
+#uglify:
+#  files:
+#    - "{{{ global.public_path }}}/main.js {{{ global.public_path }}}/main.js"
+#    - "{{{ global.scripts_path }}}/vendor.js {{{ global.scripts_path }}}/vendor.js"
+
+
+
+###
+#
+# Templates
+#
+# Template enable you to generate a set of files
+#
+#   eg.:
+#
+#     template:
+#       template_name:
+#         destination_path: "{{{ global.src_path }}}/destination_directory"
+#         files:
+#           - template_name.html (equivalent to 'templates/html/template_name.html')
+#           - stylus/template_name.styl (equivalent to 'templates/stylus/template_name.styl')
+#           - js (equivalent to 'templates/js/template_name.js')
+#
+# Example command to execute:
+#
+#   node ./workflow section MySectionName
+#
+###
+#template:
+#  section:
+#    output: index
+#    destination_path: "{{{ global.src_path }}}/sections"
+#    files:
+#      - section.html
+#      - stylus/section.styl
+#      - js
+#  component:
+#    destination_path: "{{{ global.src_path }}}/component"
+#    files:
+#      - stylus/section.styl
+#      - js/section.js

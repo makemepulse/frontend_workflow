@@ -5,6 +5,9 @@ const Print   = require('./../lib/Print')
 const exec    = require('child_process').exec
 const extname = require('path').extname
 const fs      = require('fs')
+const path    = require('path')
+
+const STYLUS_CLI = path.dirname(require.resolve('stylus'))+'/bin/stylus'
 
 const Stylus = function(options) {
 
@@ -26,8 +29,7 @@ const Stylus = function(options) {
     }
   }
 
-  const cmd    = `${__dirname}/../../node_modules/.bin/stylus`;
-  const params = [cmd];
+  const params = [STYLUS_CLI];
 
   if (options.sourcemaps) { params.push("--sourcemap-inline"); }
   if (options.watch)      { params.push("--watch"); }
