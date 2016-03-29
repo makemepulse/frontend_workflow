@@ -21,7 +21,6 @@ const Browserify = function(options) {
 
   config.options.debug   = options.sourcemaps;
   config.options.entries = [input];
-  config.options.paths   = [__dirname + '/../app'];
 
   config.babelify.compact  = options.compress;
   config.babelify.comments = !options.compress;

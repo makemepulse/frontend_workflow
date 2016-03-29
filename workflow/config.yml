@@ -112,21 +112,6 @@ global:
 
 
 
-###
-#
-# Aliasify
-#
-# See aliasify documentation (https://github.com/benbria/aliasify)
-#
-###
-#aliasify: &aliasify
-#  aliases:
-#    sections: "./app/sections"
-#    components: "./app/components"
-#    observers: "./app/observers"
-#    mediators: "./app/mediators"
-
-
 
 ###
 #
@@ -151,17 +136,18 @@ global:
 ###
 #browserify:
 #  files:
-#    - "{{{ global.src_path }}}/index.js {{{ global.scripts_path }}}/main.js"
-#    - "{{{ global.src_path }}}/vendor/index.js {{{ global.scripts_path }}}/vendor.js"
+#    - "{{{ global.src_path }}}/index.js {{{ global.public_path }}}/main.js"
+#    - "{{{ global.src_path }}}/vendor/index.js {{{ global.public_path }}}/vendor.js"
 #  options:
 #    cache: {}
 #    packageCache: {}
 #    extensions:
 #      - .js
 #      - .es
+#    paths:
+#       - "{{{ global.src_path }}}"
 #  babelify: *babelify
 #  partialify: *partialify
-#  aliasify: *aliasify
 
 
 
@@ -213,7 +199,7 @@ global:
 #uglify:
 #  files:
 #    - "{{{ global.public_path }}}/main.js {{{ global.public_path }}}/main.js"
-#    - "{{{ global.scripts_path }}}/vendor.js {{{ global.scripts_path }}}/vendor.js"
+#    - "{{{ global.public_path }}}/vendor.js {{{ global.public_path }}}/vendor.js"
 
 
 
