@@ -9,6 +9,10 @@ const Watch = function(options) {
   const pattern = options.config.files
   const params  = options.config.options
 
+  const onExit = function() {
+    watcher.close()
+  }
+
   const watcher = bs.watch(pattern, params)
 
   watcher.on('ready', function(file) {
@@ -26,8 +30,7 @@ const Watch = function(options) {
     Print.log(`[Watcher] Remove ${file}`, true, 'magenta')
   })
 
-  return watcher
-
+  process.on('exit', onExit)
 }
 
 module.exports = Watch

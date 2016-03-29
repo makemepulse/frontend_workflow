@@ -25,12 +25,16 @@ const ProcessManager = (function(){
     current_action = action
   }
 
-  process.on('beforeExit', function() {
+  const _clean = function() {
     if (current_action) {
-      const file_path = `${dirPath}/${current_action}_pid.txt`
-      if (fs.existsSync(file_path)) fs.unlinkSync(file_path)
+      _kill(current_action)
+//      const file_path = `${dirPath}/${current_action}_pid.txt`
+//      if (fs.existsSync(file_path)) fs.unlinkSync(file_path)
     }
-  })
+  }
+
+  process.on('beforeExit', _clean)
+//  process.on('SIGINT', _clean)
 
   return {
     kill: _kill,

@@ -13,8 +13,12 @@ const Server = function(options) {
   const params  = options.config.options
 
   const watcher = bs.watch(pattern, params)
-  return watcher
 
+  const onExit = function() {
+    bs.exit()
+  }
+
+  process.on('beforeExit', onExit)
 }
 
 module.exports = Server

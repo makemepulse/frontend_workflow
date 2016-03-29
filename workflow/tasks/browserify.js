@@ -56,6 +56,10 @@ const Browserify = function(params) {
     Print.log('[Watchify] '+msg, true, 'white')
   }
 
+  const onExit = function() {
+    b.close()
+  }
+
   const onUpdate = bundle
 
   // Configure Browserify
@@ -73,6 +77,10 @@ const Browserify = function(params) {
   if (config.transforms.babelify) b.transform(babelify, config.transforms.babelify);
   if (config.transforms.partialify) b.transform(partialify.alsoAllow(config.transforms.partialify));
 
+  // Listen exit event
+  process.on('beforeExit', onExit)
+
+  // Start bundle
   bundle()
 }
 
