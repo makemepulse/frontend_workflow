@@ -10,12 +10,14 @@ const options = Lib.args
 
 // Fetch first argument as action
 const action = options._[0]
+Lib.process_manager.kill(action)
+Lib.process_manager.write(action)
 
 // Load config file
 const Config = Lib.config(options.config_path)
 
 if (!Config || !Config[action]) {
-  Lib.print.log('Please setup "config.yml"', true, 'yellow')
+  Lib.print.log('Please setup "config.yml" (Task: '+action+')', true, 'yellow')
   return
 }
 
