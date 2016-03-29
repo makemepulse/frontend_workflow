@@ -5,78 +5,75 @@ const fs         = require('fs-extra')
 const path       = require('path')
 const browserify = require('browserify')
 const watchify   = require('watchify')
-const aliasify   = require('aliasify')
 const partialify = require('partialify/custom')
 const babelify   = require('babelify')
 
 const Print      = require('./../lib/Print')
 
 
-const Browserify = function(options) {
+const Browserify = function(params) {
 
-  const config    = options.config;
-  const input     = options.i;
-  const output    = options.o;
-  const tmpOutput = `${__dirname}/../tmp/${path.basename(options.o)}`;
+  // Configure
+  const config             = params.config
+  const browserify_options = config.options
+  const input              = params.input
+  const output             = params.output
+  const tmp_output         = `${__dirname}/../tmp/${path.basename(params.output)}`
 
-  config.options.debug   = options.sourcemaps;
-  config.options.entries = [input];
+  browserify_options.debug              = params.sourcemaps
+  config.transforms.babelify.sourceMaps = params.sourcemaps ? 'inline' : false
 
-  config.babelify.compact  = options.compress;
-  config.babelify.comments = !options.compress;
+  // Check tmp_output directory exists
+  fs.ensureDirSync(path.dirname(tmp_output))
 
-  /**
-   *
-   */
-  fs.ensureDirSync(path.dirname(tmpOutput))
-
-  /**
-   * Configure browserify
-   */
-  var b = browserify(config.options);
-  b.on('label', function(e){
-    const i = input.replace('./', '');
-    if (e.match(i)) {
-      fs.move(tmpOutput, output, { clobber: true }, ()=>{
-        Print.log(`[Browserify] Compiled ${output}`, true, 'magenta')
-      })
-    }
-  });
-
-  if (options.watch) {
-    b = watchify(b);
-    b.on('update', onUpdate);
-  }
-
-  /**
-   * Add transforms
-   */
-  b.transform(babelify, config.babelify);
-  b.transform(aliasify, config.aliasify);
-  b.transform(partialify.alsoAllow(config.partialify.extensions));
-
-  function bundle(){
+  // Functions
+  const bundle = function() {
     var bndle = b.bundle();
     bndle     = bndle.on('error', onError);
 
-    if (tmpOutput) {
-      bndle.pipe(fs.createWriteStream(tmpOutput));
+    if (tmp_output) {
+      bndle.pipe(fs.createWriteStream(tmp_output));
     } else {
       bndle.pipe(process.stdout);
     }
   }
 
-  function onUpdate(){
-    bundle();
+  const onLabel = function(e) {
+    const i = input.replace('./', '');
+    if (e.match(i)) {
+      fs.move(tmp_output, output, { clobber: true }, function() {
+        Print.log(`[Browserify] Compiled ${output}`, true, 'magenta')
+      })
+    }
   }
 
-  function onError(err){
+  const onError = function() {
     Print.log('[Browserify] Error', true, 'red')
     Print.log(err.message, true, 'red');
   }
 
-  bundle();
+  const onLog = function(msg) {
+    Print.log('[Watchify] '+msg, true, 'white')
+  }
 
+  const onUpdate = bundle
+
+  // Configure Browserify
+  var b = browserify(input, browserify_options)
+  b.on('label', onLabel)
+
+  // Configure Watchify
+  if (params.watch) {
+    b = watchify(b, config.transforms.watchify)
+    b.on('update', onUpdate)
+    b.on('log', onLog)
+  }
+
+  // Configure transforms
+  if (config.transforms.babelify) b.transform(babelify, config.transforms.babelify);
+  if (config.transforms.partialify) b.transform(partialify.alsoAllow(config.transforms.partialify));
+
+  bundle()
 }
 
 module.exports = Browserify

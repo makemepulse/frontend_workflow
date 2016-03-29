@@ -98,32 +98,7 @@ global:
 
 
 
-####
-#
-# Babelify
-#
-# See babelify documentation (https://github.com/babel/babelify)
-#
-###
-#babelify: &babelify
-#  modules: common
-#  compact: false
-#  comments: false
 
-
-
-
-###
-#
-# Partialify
-#
-# See partialify documentation (https://github.com/bclinkinbeard/partialify)
-#
-###
-#partialify: &partialify
-#  extensions:
-#    - svg
-#    - txt
 
 
 
@@ -132,6 +107,8 @@ global:
 # Browserify
 #
 # See browserify documentation (https://github.com/substack/node-browserify)
+# See partialify documentation (https://github.com/bclinkinbeard/partialify)
+# See babelify documentation (https://github.com/babel/babelify)
 #
 ###
 #browserify:
@@ -144,10 +121,20 @@ global:
 #    extensions:
 #      - .js
 #      - .es
+#      - .html
 #    paths:
 #       - "{{{ global.src_path }}}"
-#  babelify: *babelify
-#  partialify: *partialify
+#  transforms:
+#    babelify:
+#      modules: common
+#      compact: false
+#      comments: true
+#    partialify:
+#      - svg
+#      - txt
+#    watchify:
+#      delay: 600
+
 
 
 
