@@ -1,0 +1,21 @@
+'use strict'
+
+module.exports = (function() {
+  const path = require('path')
+  const fs   = require('fs-extra')
+
+  const paths = {
+    workflow_path: path.join(__dirname, '..'),
+    tasks_path:    path.join(__dirname, '..', 'tasks'),
+    tmp_path:      path.join(__dirname, '..', 'tmp'),
+    pids_path:     path.join(__dirname, '..', 'tmp', 'pids'),
+    lib_path:      path.join(__dirname),
+  }
+
+  // Create directories
+  for (let k in paths) {
+    fs.ensureDirSync(paths[k])
+  }
+
+  return paths
+})()
