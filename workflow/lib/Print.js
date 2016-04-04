@@ -14,7 +14,7 @@ const Print = (function(){
       else console.log(_colors[color](`${value}`))
     } else {
       if (withDate) console.log(_time(), value)
-      console.log(value)
+      else console.log(value)
     }
   }
 

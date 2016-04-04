@@ -10,7 +10,7 @@ module.exports = {
     v: ['verbose'],
     kill: ['kill_pids']
   },
-  default: {
+  'default': {
     s: false,
     m: false,
     w: false,

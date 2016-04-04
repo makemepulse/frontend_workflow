@@ -1,9 +1,8 @@
 'use strict'
 
-const EventEmitter   = require('events').EventEmitter
-//const ProcessManager = require('./ProcessManager')
-const Print          = require('./Print')
-const Bind           = require('./mixins/Bind')
+const EventEmitter = require('events').EventEmitter
+const Print        = require('./Print')
+const Bind         = require('./mixins/Bind')
 
 class TaskManager extends EventEmitter {
   constructor() {
@@ -85,6 +84,39 @@ class TaskManager extends EventEmitter {
       this.tasks[k].kill()
     }
   }
+
+  execute(taskOrTasks) {
+    // Detect if it's an array
+    if (typeof taskOrTasks.length === 'undefined') {
+      taskOrTasks.execute()
+      return
+    }
+
+    // Execute the array of tasks, one by one
+    const tasks      = taskOrTasks
+    let current_task = null
+    let len          = tasks.length
+    let index        = 0
+
+    const _onNext = (function() {
+      if (current_task) {
+        this.removeListener('task:kill', _onNext)
+      }
+
+      if (tasks.length > 0) {
+        index++
+        current_task = tasks.shift()
+        this.on('task:kill', _onNext)
+        Print.log(`Execute task '${current_task.name}' (${index}/${len})`, true, 'white')
+        try {
+          current_task.execute()
+        } catch(e) {}
+      }
+    }).bind(this)
+
+    _onNext()
+  }
+
 }
 
 module.exports = new TaskManager

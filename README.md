@@ -6,10 +6,10 @@
 
 [-] Manage process/task exit
 
-[ ] Organise configuration by task and options by input/output
+[-] Organise configuration by task and options by input/output
 
 [-] Override `argv` options inside the configuration file
 
-[ ] Read scripts inside `package.json`
+[-] Read scripts inside `package.json`
 
-[ ] Precise which configuration file to use inside `package.json`
+[-] Precise which configuration file to use inside `package.json`

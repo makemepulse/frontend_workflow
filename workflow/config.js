@@ -1,8 +1,8 @@
 const paths = require('./config/paths')
 
-const _files = {}
+const _tasks = {}
 
-_files['typescript'] = [
+_tasks['typescript'] = [
   {
     file: `./app/index.ts ./public/main.js`,
     override_parameters: {
@@ -13,62 +13,66 @@ _files['typescript'] = [
   }
 ]
 
-_files['uglify'] = [
+_tasks['uglify'] = [
   {
     file: `./public/main.js ./public/main.js`
   }
 ]
 
-_files['stylus'] = [
+_tasks['stylus'] = [
   {
     file: `./app/index.styl ./public/main.css`
   }
 ]
 
-_files['postcss'] = [
+_tasks['postcss'] = [
   {
     file: `./app/index.css ./public/main.css`
   }
 ]
 
-_files['sass'] = [
+_tasks['sass'] = [
   {
     file: `./app/index.sass ./public/main.css`
   }
 ]
 
-_files['watcher'] = [
+_tasks['watcher'] = [
   {
     file: './public/**/*'
   }
 ]
 
 
-_files['browserify'] = [
-  {
-    file: `./app/index.js ./public/main.js`,
-    options: {
-      cache: {},
-      packageCache: {},
-      extensions: [ '.js', '.es' ],
-      paths: [
-        './app'
-      ]
+const browserify_options = {
+  options: {
+    cache: {},
+    packageCache: {},
+    extensions: [ '.js', '.es' ],
+    paths: [
+      './app'
+    ]
+  },
+  transforms: {
+    babelify: {
+      modules: "common",
+      compact: false,
+      comments: true
     },
-    transforms: {
-      babelify: {
-        modules: "common",
-        compact: false,
-        comments: true
-      },
-      partialify: [ 'svg', 'txt' ],
-      watchify: {
-        delay: 600
-      }
+    partialify: [ 'svg', 'txt' ],
+    watchify: {
+      delay: 600
     }
   }
+}
+
+_tasks['browserify'] = [
+  Object.assign({
+    file: `./app/index.js ./public/main.js`
+  }, browserify_options),
+  Object.assign({
+    file: `./app/vendor/index.js ./public/vendor.js`
+  }, browserify_options)
 ]
 
-module.exports = function(task_name) {
-  return _files[task_name]
-}
+module.exports = _tasks
