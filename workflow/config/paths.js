@@ -5,11 +5,12 @@ module.exports = (function() {
   const fs   = require('fs-extra')
 
   const paths = {
-    workflow_path: path.join(__dirname, '..'),
-    tasks_path:    path.join(__dirname, '..', 'tasks'),
-    tmp_path:      path.join(__dirname, '..', 'tmp'),
-    pids_path:     path.join(__dirname, '..', 'tmp', 'pids'),
-    lib_path:      path.join(__dirname),
+    workflow_path:  path.join(__dirname, '..'),
+    tasks_path:     path.join(__dirname, '..', 'tasks'),
+    templates_path: path.join(__dirname, '..', 'templates'),
+    tmp_path:       path.join(__dirname, '..', 'tmp'),
+    pids_path:      path.join(__dirname, '..', 'tmp', 'pids'),
+    lib_path:       path.join(__dirname),
   }
 
   // Create directories

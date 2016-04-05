@@ -106,11 +106,16 @@ class TaskManager extends EventEmitter {
       if (tasks.length > 0) {
         index++
         current_task = tasks.shift()
-        this.on('task:kill', _onNext)
-        Print.log(`Execute task '${current_task.name}' (${index}/${len})`, true, 'white')
-        try {
-          current_task.execute()
-        } catch(e) {}
+        if (current_task) {
+          this.on('task:kill', _onNext)
+          Print.log(`Execute task '${current_task.name}' (${index}/${len})`, true, 'white')
+          try {
+            current_task.execute()
+            if (current_task.getParameters().watch) _onNext() // Execute the next task if the current is a watcher
+          } catch(e) {}
+        } else {
+          _onNext()
+        }
       }
     }).bind(this)
 

@@ -4,8 +4,6 @@
   "description": "",
   "main": "workflow/index.js",
   "scripts": {
-    "main": "node workflow",
-    "template": "node workflow template",
     "stylus:compile": "node workflow stylus -s",
     "stylus:watch": "node workflow stylus -s -w",
     "stylus:build": "node workflow stylus -m",
@@ -44,6 +42,6 @@
     "watchify": "^3.6.1"
   },
   "workflow": {
-    "development": "./workflow/config.js"
+    "development": "./workflow/config/tasks.js"
   }
 }

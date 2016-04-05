@@ -18,6 +18,7 @@ class Browserify extends Task {
   }
 
   execute() {
+    super.execute()
 
     // Configure
     const params             = this.getParameters()
@@ -89,8 +90,6 @@ class Browserify extends Task {
     // Start bundle
     this.b = b
     bundle()
-
-    super.execute()
   }
 
   kill() {

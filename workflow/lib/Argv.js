@@ -5,8 +5,8 @@ const subarg = require('subarg')
 
 class Argv {
 
-  constructor() {
-    this._argv = process.argv.slice(2)
+  constructor(argv) {
+    this._argv = argv || process.argv.slice(2)
   }
 
   replace(argv) {
@@ -23,4 +23,6 @@ class Argv {
 
 }
 
-module.exports = new Argv
+Argv.main = new Argv
+
+module.exports = Argv

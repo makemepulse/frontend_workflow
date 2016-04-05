@@ -7,15 +7,15 @@ const Task        = require('./../lib/Task')
 class Server extends Task {
 
   execute() {
+    super.execute()
+
     const config  = this.getConfig()
     const pattern = config.files
     const options = config.options || {}
 
     this.bs = bs.create()
     this.bs.watch(pattern, options)
-    this.bs.init(params.config)
-
-    super.execute()
+    this.bs.init(options)
   }
 
   kill() {

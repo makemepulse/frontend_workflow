@@ -1,4 +1,4 @@
-const paths = require('./config/paths')
+const paths = require('./paths')
 
 const _tasks = {}
 
@@ -39,7 +39,23 @@ _tasks['sass'] = [
 
 _tasks['watcher'] = [
   {
-    file: './public/**/*'
+    file: './public/**/*',
+    override_parameters: {
+      watch: true
+    }
+  }
+]
+
+_tasks['server'] = [
+  {
+    file: './public/**/*',
+    options: {
+      open: false,
+      server: './public'
+    },
+    override_parameters: {
+      watch: true
+    }
   }
 ]
 
@@ -74,5 +90,24 @@ _tasks['browserify'] = [
     file: `./app/vendor/index.js ./public/vendor.js`
   }, browserify_options)
 ]
+
+_tasks['template'] = [{
+  section: {
+    output: 'index',
+    destination_path: './app/sections',
+    files: [
+      'section.html',
+      'stylus/section.styl',
+      'js'
+    ]
+  },
+  components: {
+    destination_path: './public/components',
+    files: [
+      'stylus/section.styl',
+      'js/section.js'
+    ]
+  }
+}]
 
 module.exports = _tasks

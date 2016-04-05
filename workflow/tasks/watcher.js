@@ -13,6 +13,8 @@ class Watch extends Task {
   }
 
   execute() {
+    super.execute()
+
     const config  = this.getConfig()
     const pattern = config.file
     const options = config.options || {}
@@ -36,8 +38,6 @@ class Watch extends Task {
     watcher.on('unlink', function(file) {
       Print.log(`[${name}] Remove ${file}`, true, 'magenta')
     })
-
-    super.execute()
   }
 
   kill() {

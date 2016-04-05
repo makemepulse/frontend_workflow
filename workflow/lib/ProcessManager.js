@@ -48,7 +48,7 @@ class ProcessManager {
     })
 
     ps.on('close', (function(code){
-      Print.log(`[${psName}] child process exited with code ${code}`, true, code === 0 ? 'magenta' : 'red')
+      Print.log(`[${psName}] child process exited with code ${code}`, true, code === 0 || code === null ? 'magenta' : 'red')
       this._deleteTemporaryFile(this.processes[psName])
     }).bind(this))
 

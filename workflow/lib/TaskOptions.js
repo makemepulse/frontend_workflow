@@ -15,21 +15,24 @@ class TaskOptions {
 
   constructor(config) {
     this._config = config
-    this.argv    = null
+    this.argv    = new Argv
   }
 
   getParameters() {
-    this.argv = Argv.fetch()
-    const result = {}
+    const argv   = this.argv.fetch()
+    const result = {argv:argv}
 
     for (let len = _exports.length, i = 0; i < len; i++) {
-      result[_exports[i]] = this.argv[_exports[i]]
+      result[_exports[i]] = argv[_exports[i]]
     }
 
-    const override     = this._config.override_parameters || {}
-    const input_output = this._config.file.split(' ')
-    override.input     = input_output[0]
-    override.output    = input_output[1]
+    const override = this._config.override_parameters || {}
+
+    if (this._config.file) {
+      const input_output = this._config.file.split(' ')
+      override.input     = input_output[0]
+      override.output    = input_output[1]
+    }
 
     for (let len = _exports.length, i = 0; i < len; i++) {
       if (result.hasOwnProperty(_exports[i]) && override.hasOwnProperty(_exports[i])) {

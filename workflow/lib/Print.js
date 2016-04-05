@@ -4,7 +4,7 @@
 const Print = (function(){
 
   const _colors = require('colors/safe')
-  const Argv    = require('./Argv')
+  const Argv    = require('./Argv').main
 
   const _log = function(value, withDate, color) {
     color    = color || null
