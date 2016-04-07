@@ -22,12 +22,12 @@ const execute = function(args, ignoreExecution) {
   const cfg       = config[task_name]
 
   if (!Tasks.isTask(task_name)) {
-    Print.log(`'${task_name}' is not a task.`, true, 'yellow')
+    Print.log(`'${task_name}' is not a task.`, 'yellow')
     return null
   }
 
   if (!cfg) {
-    Print.log(`'${task_name}' is not configured.`, true, 'yellow')
+    Print.log(`'${task_name}' is not configured.`, 'yellow')
     return null
   }
 

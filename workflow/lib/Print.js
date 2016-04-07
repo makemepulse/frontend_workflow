@@ -13,7 +13,7 @@ class Print {
 
   setup() {
     //    const verbose = process.argv.indexOf('-v') !== -1 || process.argv.indexOf('--verbose') !== -1
-    this.verbose = this.argv.fetch().verbose
+    this.verboseMode = this.argv.fetch().verbose
   }
 
   /**
@@ -22,6 +22,7 @@ class Print {
    * @param {string|Object} [color_or_options={}]
    * @param {boolean} [color_or_options.no_color=false] color_or_options.no_color
    * @param {boolean} [color_or_options.use_date=true] color_or_options.use_date
+   * @param {boolean} [color_or_options.is_array=true] color_or_options.is_array
    * @param {string} [color_or_options.color]
    *
    */
@@ -33,9 +34,11 @@ class Print {
     color          = opts.color || color
     const use_date = typeof opts.use_date === 'boolean' ? opts.use_date : true
     const no_color = typeof opts.no_color === 'boolean' ? opts.no_color : false
+    const is_array = typeof opts.is_array === 'boolean' ? opts.is_array : false
 
     // Transform value to string
     let string = typeof value === 'string' ? [value] : [value.toString()]
+    string     = is_array ? value : string
     string     = string.join(' ')
 
     if (no_color) {
@@ -94,10 +97,11 @@ class Print {
    * @param {string|Object} [color_or_options={}]
    * @param {boolean} [color_or_options.no_color=false] color_or_options.no_color
    * @param {boolean} [color_or_options.use_date=true] color_or_options.use_date
+   * @param {boolean} [color_or_options.is_array=true] color_or_options.is_array
    * @param {string} [color_or_options.color]
    */
   verbose(value, color_or_options) {
-    if (this.verbose) this.log(value, color_or_options)
+    if (this.verboseMode) this.log(value, color_or_options)
   }
 
 }

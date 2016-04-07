@@ -33,10 +33,10 @@ class TaskManager extends EventEmitter {
 
   register(task) {
     if (this.tasks[task.name]) {
-      Print.verbose(`'${task.name}' already registered`, true, 'yellow')
+      Print.verbose(`[${task.name}] already registered`, 'yellow')
       return
     }
-    Print.verbose(`'${task.name}' is registered with success`, true, 'green')
+    Print.verbose(`[${task.name}] is registered with success`, 'green')
     this.tasks[task.name] = task
   }
 
@@ -46,11 +46,11 @@ class TaskManager extends EventEmitter {
     if (typeof taskOrName.name === "string") name = taskOrName.name
 
     if (!this.tasks[name]) {
-      Print.verbose(`'${name}' is not registered`, true, 'yellow')
+      Print.verbose(`'${name}' is not registered`, 'yellow')
       return
     }
 
-    Print.verbose(`'${name}' is unregistered with success`, true, 'green')
+    Print.verbose(`'${name}' is unregistered with success`, 'green')
     delete this.tasks[name]
   }
 
@@ -108,7 +108,7 @@ class TaskManager extends EventEmitter {
         current_task = tasks.shift()
         if (current_task) {
           this.on('task:kill', _onNext)
-          Print.log(`Execute task '${current_task.name}' (${index}/${len})`, true, 'white')
+          Print.log(`Execute task [${current_task.name}] (${index}/${len})`, 'white')
           try {
             current_task.execute()
             if (current_task.getParameters().watch) _onNext() // Execute the next task if the current is a watcher

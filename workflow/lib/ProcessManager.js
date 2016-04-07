@@ -39,16 +39,22 @@ class ProcessManager {
     ps.stdout.setEncoding('utf-8')
     ps.stdout.on('data', function(data) {
       data = Print.clean(data.toString('utf-8'))
-      Print.log(`[${psName}] ${data}`, true, 'magenta')
+      Print.log([
+        Print.colors['magenta'](`[${psName}]`),
+        data
+      ], { is_array: true })
     })
 
     ps.stderr.on('data', function(data) {
       data = Print.clean(data.toString('utf-8'))
-      Print.log(`[${psName}] ${data}`, true, 'red')
+      Print.log([
+        Print.colors['red'](`[${psName}]`),
+        data
+      ], { is_array: true })
     })
 
     ps.on('close', (function(code){
-      Print.log(`[${psName}] child process exited with code ${code}`, true, code === 0 || code === null ? 'magenta' : 'red')
+      Print.log(`[${psName}] child process exited with code ${code}`, code === 0 || code === null ? 'magenta' : 'red')
       this._deleteTemporaryFile(this.processes[psName])
     }).bind(this))
 
@@ -70,9 +76,9 @@ class ProcessManager {
         const PID = fs.readFileSync(`${paths.pids_path}/${filename}`, 'utf8')
         try {
           process.kill(PID, 'SIGINT')
-          Print.log(`Process ${PID} is killed (${action}.pid)`, true, 'yellow')
+          Print.log(`Process ${PID} is killed (${action}.pid)`, 'yellow')
         } catch(e) {
-          Print.log(`No process founded`, true, 'grey')
+          Print.log(`No process founded`, 'grey')
         }
         fs.unlinkSync(`${paths.pids_path}/${filename}`)
       }

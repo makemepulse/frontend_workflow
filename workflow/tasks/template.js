@@ -33,7 +33,7 @@ class Template extends Task {
     const config = this.getConfig(templateName)
 
     if (!config) {
-      Print.log(`The "${templateName}" template do not have any configuration`, true, 'yellow')
+      Print.log(`The "${templateName}" template do not have any configuration`, 'yellow')
     }
 
     const manifest = this._buildManifest(config, templateName, dstName)
@@ -47,7 +47,7 @@ class Template extends Task {
       const output   = m.render(template, p)
       fs.ensureDirSync(path.dirname(manifest[j].outputFile))
       fs.writeFile(manifest[j].outputFile, output)
-      Print.log(`${manifest[j].outputFile} generated`, true, 'green')
+      Print.log(`${manifest[j].outputFile} generated`, 'green')
     }
   }
 

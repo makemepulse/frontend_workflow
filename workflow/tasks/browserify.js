@@ -51,23 +51,22 @@ class Browserify extends Task {
       const i = input.replace('./', '');
       if (e.match(i)) {
         fs.move(tmp_output, output, { clobber: true }, function() {
-          console.log(
-            Print.colors['cyan'](Print.time()),
+          Print.log([
             Print.colors['magenta'](`[${name}]`),
             Print.colors['gray']('compiled'),
             output
-          )
+          ], { is_array: true })
         })
       }
     }
 
     const onError = function(err) {
-      Print.log(`[${name}] Error`, true, 'red')
+      Print.log(`[${name}] Error`, 'red')
       Print.log(err.message, true, 'red');
     }
 
     const onLog = function(msg) {
-      Print.verbose(`[${name}] [Wachify] ${msg}`, true, 'white')
+      Print.verbose(`[${name}] [Wachify] ${msg}`, 'white')
     }
 
     const onUpdate = bundle

@@ -25,18 +25,18 @@ class Watch extends Task {
     const name    = this.name
 
     watcher.on('ready', function(file) {
-      Print.log(`[${name}] Ready to watch`, true, 'magenta')
+      Print.log(`[${name}] Ready to watch`, 'magenta')
       this.on('add', function(file){
-        Print.log(`[${name}] Add ${file}`, true, 'magenta')
+        Print.log(`[${name}] Add ${file}`, 'magenta')
       })
     })
 
     watcher.on('change', function(file) {
-      Print.log(`[${name}] Change ${file}`, true, 'magenta')
+      Print.log(`[${name}] Change ${file}`, 'magenta')
     })
 
     watcher.on('unlink', function(file) {
-      Print.log(`[${name}] Remove ${file}`, true, 'magenta')
+      Print.log(`[${name}] Remove ${file}`, 'magenta')
     })
   }
 
