@@ -1,55 +1,106 @@
 #!/usr/bin/env node
 'use strict'
 
-const Print = (function(){
+const _colors = require('colors/safe')
 
-  const _colors = require('colors/safe')
-  const Argv    = require('./Argv').main
+class Print {
 
-  const _log = function(value, withDate, color) {
-    color    = color || null
-    withDate = withDate || false
-    if (color) {
-      if (withDate) console.log(_colors['cyan'](_time()), _colors[color](`${value}`))
-      else console.log(_colors[color](`${value}`))
-    } else {
-      if (withDate) console.log(_time(), value)
-      else console.log(value)
-    }
+  constructor() {
+    this.argv   = require('./Argv').main
+    this.colors = _colors
+    this.setup()
   }
 
-  const _time = function() {
+  setup() {
+    //    const verbose = process.argv.indexOf('-v') !== -1 || process.argv.indexOf('--verbose') !== -1
+    this.verbose = this.argv.fetch().verbose
+  }
+
+  /**
+   * console.log with colors
+   * @param {*} value
+   * @param {string|Object} [color_or_options={}]
+   * @param {boolean} [color_or_options.no_color=false] color_or_options.no_color
+   * @param {boolean} [color_or_options.use_date=true] color_or_options.use_date
+   * @param {string} [color_or_options.color]
+   *
+   */
+  log(value, color_or_options) {
+    if (value === undefined) return
+
+    const opts     = typeof color_or_options === 'object' ? color_or_options : {}
+    let color      = typeof color_or_options === 'string' ? color_or_options : null
+    color          = opts.color || color
+    const use_date = typeof opts.use_date === 'boolean' ? opts.use_date : true
+    const no_color = typeof opts.no_color === 'boolean' ? opts.no_color : false
+
+    // Transform value to string
+    let string = typeof value === 'string' ? [value] : [value.toString()]
+    string     = string.join(' ')
+
+    if (no_color) {
+      string = _colors['strip'](string)
+    } else if (color) {
+      string = _colors[color](_colors['strip'](string))
+    }
+
+    if (use_date) {
+      let time = this.getTime()
+      let date = no_color ? time : _colors['cyan'](time)
+      console.log('%s %s', date, string)
+      return
+    }
+
+    console.log('%s', string)
+  }
+
+  /**
+   *
+   * @returns {string}
+   */
+  getTime() {
     const d = new Date();
-    const h = _pad(d.getHours(), 2)
-    const m = _pad(d.getMinutes(), 2)
-    const s = _pad(d.getSeconds(), 2)
+    const h = this.pad(d.getHours(), 2)
+    const m = this.pad(d.getMinutes(), 2)
+    const s = this.pad(d.getSeconds(), 2)
     return `[${h}:${m}:${s}]`
   }
 
-  const _pad = function(value, max) {
+  /**
+   *
+   * @param {string} value
+   * @param {number} max
+   * @returns {string}
+   */
+  pad(value, max) {
+    if (value === undefined) return
     let s = value.toString();
-    return s.length < max ? _pad("0"+value, max) : s
+    return s.length < max ? this.pad("0"+value, max) : s
   }
 
-  const _clean = function(string) {
-    return string.replace(/^(\s|\n)+|(\s|\n)+$/g, '')
+  /**
+   *
+   * @param string
+   * @returns {string}
+   */
+  clean(value) {
+    if (value === undefined) return
+    return value.toString().replace(/^(\s|\n)+|(\s|\n)+$/g, '')
   }
 
-  const _verbose = function() {
-//    const verbose = process.argv.indexOf('-v') !== -1 || process.argv.indexOf('--verbose') !== -1
-    const verbose = Argv.fetch().verbose
-//    console.log(Argv.fetch())
-    if (verbose) _log(...arguments)
+  /**
+   * console.log with colors only verbose mode activated
+   * @param {*} value
+   * @param {string|Object} [color_or_options={}]
+   * @param {boolean} [color_or_options.no_color=false] color_or_options.no_color
+   * @param {boolean} [color_or_options.use_date=true] color_or_options.use_date
+   * @param {string} [color_or_options.color]
+   */
+  verbose(value, color_or_options) {
+    if (this.verbose) this.log(value, color_or_options)
   }
 
-  return {
-    log: _log,
-    time: _time,
-    clean: _clean,
-    colors: _colors,
-    verbose: _verbose
-  }
+}
 
-})()
-
-module.exports = Print
+const _print = new Print
+module.exports = _print
