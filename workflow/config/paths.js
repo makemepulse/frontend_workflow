@@ -1,5 +1,9 @@
 'use strict'
 
+/**
+ * List of paths
+ */
+
 module.exports = (function() {
   const path = require('path')
   const fs   = require('fs-extra')
@@ -13,10 +17,11 @@ module.exports = (function() {
     lib_path:       path.join(__dirname),
   }
 
-  // Create directories
+  // Create directories from paths
   for (let k in paths) {
     fs.ensureDirSync(paths[k])
   }
 
   return paths
+
 })()

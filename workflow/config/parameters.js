@@ -1,19 +1,24 @@
+'use strict'
+
+/**
+ * Parameters
+ * Documentation (https://github.com/substack/subarg)
+ */
+
 module.exports = {
-  boolean: ['w', 'm', 's', 'v', 'kill'],
+  boolean: ['watch', 'compress', 'sourcemap', 'verbose'],
   alias: {
-    i: ['input'],
-    w: ['watch'],
-    o: ['output', 'out'],
-    m: ['compress', 'minify', 'min'],
-    s: ['sourcemaps', 'sourcemap'],
-    v: ['verbose'],
-    kill: ['kill_pids']
+    input: ['i'],
+    watch: ['w'],
+    output: ['o', 'out'],
+    compress: ['m', 'minify', 'min'],
+    sourcemap: ['s', 'sourcemaps'],
+    verbose: ['v', 'debug']
   },
   'default': {
-    s: false,
-    m: false,
-    w: false,
-    v: true,
-    kill: false
+    sourcemap: false,
+    compress: false,
+    watch: false,
+    verbose: true
   }
 }
