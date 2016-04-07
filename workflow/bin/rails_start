@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+SPID=./tmp/pids/server.pid
+if [ -f "$SPID" ]
+then
+  PID=$( cat ./tmp/pids/server.pid )
+  kill $PID
+fi
+
+for param in "$@"
+do
+
+  ### Compile assets
+  if [ "$param" = "--compile" ]
+  then
+    cd frontend && npm run compile
+    exit
+  fi
+
+  ### Compile assets and minify them
+  if [ "$param" = "--build" ]
+  then
+    cd frontend && npm run build
+    exit
+  fi
+
+  ## Start rails server and frontend watchers
+  rails s -b 0.0.0.0 & ( sleep 5 && cd frontend/ && npm start );
+
+done
