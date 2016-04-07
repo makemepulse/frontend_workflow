@@ -8,10 +8,10 @@ class Print {
   constructor() {
     this.argv   = require('./Argv').main
     this.colors = _colors
-    this.setup()
+    this._setup()
   }
 
-  setup() {
+  _setup() {
     //    const verbose = process.argv.indexOf('-v') !== -1 || process.argv.indexOf('--verbose') !== -1
     this.verboseMode = this.argv.fetch().verbose
   }

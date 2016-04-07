@@ -9,26 +9,57 @@ class TaskProcess extends Task {
     this.ps = null
   }
 
+  /**
+   * Bind methods with the object as context
+   * @private
+   */
+  _bindMethods() {
+    this.bind([ '_onClose' ])
+    super._bindMethods()
+  }
+
+  /**
+   * Activate listeners
+   */
   activate() {
-    this.ps.on('close', this._onExit)
+    this.ps.on('close', this._onClose)
     super.activate()
   }
 
+  /**
+   * Desactivate listeners
+   */
   desactivate() {
-    this.ps.removeListener('close', this._onExit)
+    this.ps.removeListener('close', this._onClose)
     super.desactivate()
   }
 
+  /**
+   * Execute command to a child process
+   * @param {string} command
+   * @returns {null|ChildProcess}
+   */
   execute(command) {
-    if (this.running) return
+    if (this.running) return null
     this.ps = ProcessManager.executeProcess(this.name, command)
     super.execute()
     return this.ps
   }
 
+  /**
+   * Kill the child process
+   */
   kill() {
-    if (!this.running) return
+    if (!this.running) return null
     if (this.ps) ProcessManager.killProcess(this.ps)
+  }
+
+  /**
+   * When the process is killed
+   * Call the super.kill method to dispatch 'kill' event and desactivate listeners
+   * @private
+   */
+  _onClose() {
     super.kill()
   }
 }

@@ -6,11 +6,22 @@ const Bind         = require('./mixins/Bind')
 const TaskManager  = require('./TaskManager')
 const TaskOptions  = require('./TaskOptions')
 
+/**
+ * Create a task object
+ * @extend EventEmitter
+ * @class Task
+ */
 class Task extends EventEmitter {
+
+  /**
+   *
+   * @param {string} name
+   * @param {Object} config
+   */
   constructor(name, config) {
     super()
     Object.assign(this, Bind)
-    this.bindMethods()
+    this._bindMethods()
 
     this.options = new TaskOptions(config)
     this._name   = name || 'noname'
@@ -18,38 +29,65 @@ class Task extends EventEmitter {
     this.running = false
   }
 
-  bindMethods() {
-    this.bind([ '_onExit' ])
-  }
+  /**
+   * Bind methods with the object as context
+   * @private
+   */
+  _bindMethods() {}
 
-  activate() {
-    process.on('beforeExit', this._onExit)
-  }
+  /**
+   * Activate listeners
+   */
+  activate() {}
 
-  desactivate() {
-    process.removeListener('beforeExit', this._onExit)
-  }
+  /**
+   * Desactivate listeners
+   */
+  desactivate() {}
 
+  /**
+   * Get the full name of task
+   * @returns {string}
+   */
   get fullname() {
     return this._name + '_' + this.guid
   }
 
+  /**
+   * Set the name of task
+   * @param value
+   */
   set name(value) {
     this._name = value
   }
 
+  /**
+   * Get the shorten name of task
+   * @returns {string}
+   */
   get name() {
     return this._name + '_' + this.guid.slice(0, 4)
   }
 
+  /**
+   * Get the task configuration
+   * @returns {Object}
+   */
   getConfig() {
     return this.options.getConfig()
   }
 
+  /**
+   * Get the task parameters
+   * @returns {Object}
+   */
   getParameters() {
     return this.options.getParameters()
   }
 
+  /**
+   * Execute the task
+   */
   execute() {
     if (this.running) return
     this.running = true
@@ -57,18 +95,21 @@ class Task extends EventEmitter {
     TaskManager.emit('task:execute', this)
   }
 
+  /**
+   * Kill the task
+   */
   kill() {
     if (!this.running) return
     this.running = false
     if (typeof this.desactivate === 'function') this.desactivate()
     TaskManager.emit('task:kill', this)
   }
-
-  _onExit() {
-    this.kill()
-  }
 }
 
+/**
+ * Create a task
+ * @returns {Task}
+ */
 Task.create = function() {
   return new (this)(...arguments)
 }

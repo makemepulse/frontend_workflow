@@ -3,6 +3,7 @@
 const fs    = require('fs')
 const exec  = require('child_process').exec
 const Print = require('./Print')
+const Argv  = require('./Argv')
 const Bind  = require('./mixins/Bind')
 const paths = require('./../config/paths')
 
@@ -15,21 +16,36 @@ class ProcessManager {
     this.processes = {}
 
     this.activate()
-    this.clean()
+    if (Argv.main.fetch().kill_pids) this._clean()
   }
 
+  /**
+   * Bind methods with the object as context
+   */
   bindMethods() {
     this.bind([ '_onBeforeExit' ])
   }
 
+  /**
+   * Activate listeners
+   */
   activate() {
     process.on('beforeExit', this._onBeforeExit)
   }
 
+  /**
+   * Desactivate listeners
+   */
   desactivate() {
     process.removeListener('beforeExit', this._onBeforeExit)
   }
 
+  /**
+   * Execute a child process
+   * @param {string} psName - Name of the process
+   * @param {string} command - Command to execute
+   * @returns {ChildProcess}
+   */
   executeProcess(psName, command) {
 
     const ps     = exec(command)
@@ -62,13 +78,21 @@ class ProcessManager {
 
   }
 
+  /**
+   * Kill the child process
+   * @param {ChildProcess|string} psOrGUID
+   */
   killProcess(psOrGUID) {
     const child_ps = typeof psOrGUID === 'string' ? this.processes[psOrGUID] : psOrGUID
     child_ps.kill()
     this._deleteTemporaryFile(child_ps.GUID)
   }
 
-  clean() {
+  /**
+   * Kill all pids inside tmp/pids directory
+   * @private
+   */
+  _clean() {
     const files = fs.readdirSync( `${paths.pids_path}` )
     for (let filename, i = 0, len = files.length; i < len; i++) {
       filename = files[i]
@@ -78,19 +102,28 @@ class ProcessManager {
           process.kill(PID, 'SIGINT')
           Print.log(`Process ${PID} is killed (${action}.pid)`, 'yellow')
         } catch(e) {
-          Print.log(`No process founded`, 'grey')
+          Print.log(`No process '${PID}' founded`, 'grey')
         }
         fs.unlinkSync(`${paths.pids_path}/${filename}`)
       }
     }
   }
 
+  /**
+   * Before exiting kill all child process
+   * @private
+   */
   _onBeforeExit() {
     for (var k in this.processes) {
       this.killProcess(k)
     }
   }
 
+  /**
+   * Create a temporary file with the pid number
+   * @param {ChildProcess} ps
+   * @private
+   */
   _createTemporaryFile(ps) {
     const psName = ps.GUID
     const stream = fs.createWriteStream(`${paths.pids_path}/${psName}.pid`)
@@ -98,6 +131,11 @@ class ProcessManager {
     this.processes[psName] = ps
   }
 
+  /**
+   * Delete the temporary file of the process
+   * @param {ChildProcess} ps
+   * @private
+   */
   _deleteTemporaryFile(ps) {
     const psName    = ps.GUID
     const file_path = `${paths.pids_path}/${psName}.pid`

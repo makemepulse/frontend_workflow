@@ -11,13 +11,26 @@ const _exports = [
   'config_path'
 ]
 
+/**
+ * Create TaskOptions object.
+ * This object has the config task and parameters (Argv object)
+ * @class
+ */
 class TaskOptions {
 
+  /**
+   *
+   * @param {Object} config
+   */
   constructor(config) {
     this._config = config
     this.argv    = new Argv
   }
 
+  /**
+   * Get parameters
+   * @returns {{argv: Object}}
+   */
   getParameters() {
     const argv   = this.argv.fetch()
     const result = {argv:argv}
@@ -43,6 +56,10 @@ class TaskOptions {
     return result
   }
 
+  /**
+   * Get config
+   * @returns {Object}
+   */
   getConfig() {
     return this._config
   }

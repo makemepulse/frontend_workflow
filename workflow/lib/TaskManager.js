@@ -20,12 +20,14 @@ class TaskManager extends EventEmitter {
   }
 
   activate() {
+    process.on('beforeExit', this._onBeforeExit)
     process.on('SIGINT', this._onBeforeExit)
     this.on('task:execute', this._onTaskExecute)
     this.on('task:kill', this._onTaskKill)
   }
 
   desactivate() {
+    process.off('beforeExit', this._onBeforeExit)
     process.off('SIGINT', this._onBeforeExit)
     this.off('task:execute', this._onTaskExecute)
     this.off('task:kill', this._onTaskKill)
