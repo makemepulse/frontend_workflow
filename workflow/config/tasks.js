@@ -48,8 +48,8 @@ _tasks['watcher'] = [
 
 _tasks['server'] = [
   {
-    file: './public/**/*',
     options: {
+      files: './public/**/*',
       open: false,
       server: './public'
     },
