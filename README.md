@@ -128,7 +128,7 @@ To create a new task, you have to choose between a `Task` object and a `TaskProc
 
 
 ```js
-const Task = require('./../lib/Task)
+const Task = require('./../lib/Task')
 
 class MyTask extend Task {
 
@@ -163,7 +163,7 @@ module.exports = MyTask
 ##### Example
 
 ```js
-const Task = require('./../lib/Task)
+const Task = require('./../lib/Task')
 const Chokidar = require('chokidar')
 
 class Watcher extend Task {
@@ -219,7 +219,7 @@ module.exports = Watcher
 
 
 ```js
-const TaskProcess = require('./../lib/TaskProcess)
+const TaskProcess = require('./../lib/TaskProcess')
 
 class MyTaskProcess extend TaskProcess {
     /**
@@ -239,7 +239,7 @@ module.exports = MyTaskProcess
 ##### Example
 
 ```js
-const TaskProcess       = require('./../lib/TaskProcess)
+const TaskProcess       = require('./../lib/TaskProcess')
 const STYLUS_CLI        = path.join(path.dirname(require.resolve('stylus')), 'bin', 'stylus')
 const AUTOPREFIXER_PATH = path.dirname(require.resolve('autoprefixer-stylus'))
 
@@ -295,7 +295,7 @@ Inside `config.yml`, you configure your template generation.
 ```js
 _tasks['template'] = [{
 
-    # Section template
+    // Section template
     section: {
         output: "index",
         destination_path: "./app/sections",
@@ -306,7 +306,7 @@ _tasks['template'] = [{
         ]
     },
 
-    # Component template
+    // Component template
     component: {
         destination_path: "./app/components",
         files: [
