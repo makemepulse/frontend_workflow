@@ -58,7 +58,7 @@ You can ovveride these parameters by task inside your configuration file.
 
 By default, the workflow take the file at `config/tasks.js`. You can set a new path inside your `package.json`
 
-```
+```json
 "workflow": {
     "config": "./workflow/config/tasks.js"
 }
@@ -66,7 +66,7 @@ By default, the workflow take the file at `config/tasks.js`. You can set a new p
 
 You can set a config file by environment. By default, `development` config file is used.
 
-```
+```json
 "workflow": {
     "development": "./workflow/config/development.js",
     "production": "./workflow/config/production.js"
@@ -78,7 +78,7 @@ You can set a config file by environment. By default, `development` config file 
 The configuration file exports an `Object`. Each key of the object is the name of a task and the value is an array of object.
 
 
-```
+```js
 const _tasks = {}
 
 _tasks['browserify'] = [
@@ -127,7 +127,7 @@ To create a new task, you have to choose between a `Task` object and a `TaskProc
 #### [Task class]()
 
 
-```
+```js
 const Task = require('./../lib/Task)
 
 class MyTask extend Task {
@@ -162,7 +162,7 @@ module.exports = MyTask
 
 ##### Example
 
-```
+```js
 const Task = require('./../lib/Task)
 const Chokidar = require('chokidar')
 
@@ -218,7 +218,7 @@ module.exports = Watcher
 #### [TaskProcess]()
 
 
-```
+```js
 const TaskProcess = require('./../lib/TaskProcess)
 
 class MyTaskProcess extend TaskProcess {
@@ -238,7 +238,7 @@ module.exports = MyTaskProcess
 
 ##### Example
 
-```
+```js
 const TaskProcess       = require('./../lib/TaskProcess)
 const STYLUS_CLI        = path.join(path.dirname(require.resolve('stylus')), 'bin', 'stylus')
 const AUTOPREFIXER_PATH = path.dirname(require.resolve('autoprefixer-stylus'))
@@ -292,24 +292,30 @@ Inside `config.yml`, you configure your template generation.
 
 **Exemple :**
 
-```
-template:
+```js
+_tasks['template'] = [{
 
-  # Section template
-  section:
-    output: index
-    destination_path: "{{ &global.src_path }}/sections"
-    files:
-      - section.html
-      - stylus/section.styl
-      - js
+    # Section template
+    section: {
+        output: "index",
+        destination_path: "./app/sections",
+        files: [
+            "section.html",
+            "stylus/section.styl",
+            "js"
+        ]
+    },
 
-  # Component template
-  component:
-    destination_path: "{{ &global.src_path }}/components"
-    files:
-      - stylus/section.styl
-      - js/component.js
+    # Component template
+    component: {
+        destination_path: "./app/components",
+        files: [
+            "stylus/section.styl",
+            "js/component.js"
+        ]
+    }
+    
+}]
 ```
 
 `ouput` (optional) is the name of the file generated. By default, the name of the template is taken
