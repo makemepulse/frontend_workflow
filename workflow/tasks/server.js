@@ -1,24 +1,30 @@
 #!/usr/bin/env node
 'use strict';
 
-const bs          = require('browser-sync')
-const Task        = require('./../lib/Task')
+const path = require('path')
+const TaskProcess = require('./../lib/TaskProcess')
+const BROWSER_SYNC_CLI = path.join(path.dirname(require.resolve('browser-sync')), 'bin', 'browser-sync.js')
 
-class Server extends Task {
+class Server extends TaskProcess {
 
   execute() {
     const config  = this.getConfig()
     const options = config.options || {}
 
-    this.bs = bs.create()
-    this.bs.init(options)
+    const command = [BROWSER_SYNC_CLI, 'start']
+    let value = null
 
-    super.execute()
-  }
+    for (let key in options) {
+      value = options[key]
+      if (typeof value === 'boolean') {
+        if (value) command.push('--'+key)
+      } else {
+        if (typeof value !== 'string') value = value.toString()
+        command.push(`--${key}='${value}'`)
+      }
+    }
 
-  kill() {
-    this.bs.exit()
-    super.kill()
+    super.execute(command.join(' '))
   }
 
 }

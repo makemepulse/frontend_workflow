@@ -55,8 +55,8 @@ const _tasks = {}
 //_tasks['server'] = [
 //  {
 //    options: {
-//      files: './public/**/*',
-//      open: false,
+//      files: ['./app/**/*', './public/**/*'],
+//      'no-open': true,
 //      server: './public'
 //    },
 //    override_parameters: {
