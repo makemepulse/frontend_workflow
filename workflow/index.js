@@ -135,6 +135,9 @@ if (commands.length > 0) {
     if (tasks[j]) tmp.push(tasks[j])
   }
 
+  // Sort tasks by no-watchers and watchers
+  tmp.sort(function(task) { return task.getParameters().watch })
+
   // Execute the array of tasks
   TaskManager.execute(tmp)
 
