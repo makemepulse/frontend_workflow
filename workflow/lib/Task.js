@@ -33,17 +33,23 @@ class Task extends EventEmitter {
    * Bind methods with the object as context
    * @private
    */
-  _bindMethods() {}
+  _bindMethods() {
+    this.bind([ '_onExit' ])
+  }
 
   /**
    * Activate listeners
    */
-  activate() {}
+  activate() {
+    process.on('beforeExit', this._onExit)
+  }
 
   /**
    * Desactivate listeners
    */
-  desactivate() {}
+  desactivate() {
+    process.on('beforeExit', this._onExit)
+  }
 
   /**
    * Get the full name of task
@@ -103,6 +109,16 @@ class Task extends EventEmitter {
     this.running = false
     if (typeof this.desactivate === 'function') this.desactivate()
     TaskManager.emit('task:kill', this)
+  }
+
+  /**
+   * It is difficult to detect when a task is finished or not.
+   * So I listen the main process event 'beforeExit', to detect that.
+   * Call the kill method to dispatch 'kill' event and desactivate listeners
+   * @private
+   */
+  _onExit() {
+    this.kill()
   }
 }
 

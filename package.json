@@ -17,7 +17,7 @@
     "compile": "node workflow stylus:compile browserify:compile",
     "watch": "node workflow stylus:watch browserify:watch watcher",
     "build": "node workflow stylus:build browserify:build uglify",
-    "start": "node workflow browserify:watch"
+    "start": "node workflow stylus:watch browserify:watch server"
   },
   "author": "",
   "license": "ISC",

@@ -23,9 +23,9 @@ const execute = function(args, ignoreExecution) {
 
   if (!Tasks.isTask(task_name)) {
     if (packageJSON.scripts[task_name]) {
-      Print.log(`'${task_name}' is not a task, but a task from package.json.`, 'yellow')
+      Print.log(`"${task_name}" is not a task, but a task from package.json.`)
     } else {
-      Print.log(`'${task_name}' is not a task.`, 'yellow')
+      Print.log(`"${task_name}" is not a task.`, 'yellow')
     }
     return null
   }
