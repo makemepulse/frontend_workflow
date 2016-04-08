@@ -4,6 +4,7 @@
   "description": "Set of javascript tasks for front development",
   "main": "workflow/index.js",
   "scripts": {
+    "test": "mocha workflow/test",
     "stylus:compile": "node workflow stylus -s",
     "stylus:watch": "node workflow stylus -s -w",
     "stylus:build": "node workflow stylus -m",
@@ -16,7 +17,7 @@
     "compile": "node workflow stylus:compile browserify:compile",
     "watch": "node workflow stylus:watch browserify:watch watcher",
     "build": "node workflow stylus:build browserify:build uglify",
-    "start": "node workflow stylus:watch browserify:watch server"
+    "start": "node workflow browserify:watch"
   },
   "author": "",
   "license": "ISC",
@@ -30,6 +31,7 @@
     "colors": "^1.1.2",
     "eslint": "^2.2.0",
     "fs-extra": "^0.26.2",
+    "mocha": "^2.4.5",
     "mustache": "^2.2.0",
     "partialify": "^3.1.5",
     "postcss-cli": "^2.5.1",
