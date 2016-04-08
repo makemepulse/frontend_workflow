@@ -123,8 +123,6 @@ let tasks      = []
 
 if (commands.length > 0) {
 
-  Print.log(['Execute tasks :', commands.join(' ')], { is_array: true, color: 'white' })
-
   for (let len = commands.length, i = 0; i < len; i++) {
     if (scripts.hasOwnProperty(commands[i])) {
       tasks = Array.prototype.concat(tasks, execute(scripts[commands[i]].split(' ').slice(2), true))
@@ -136,7 +134,6 @@ if (commands.length > 0) {
   for (let ln = tasks.length, j = 0; j < ln; j++) {
     if (tasks[j]) tmp.push(tasks[j])
   }
-
 
   // Execute the array of tasks
   TaskManager.execute(tmp)
