@@ -21,8 +21,15 @@ const _getTask = function(task_name) {
   return require(path.join(paths.tasks_path, task_name+'.js'))
 }
 
+const _createTask = function(task_name, config) {
+  const Task = _getTask(task_name)
+  if (!Task) return null
+  return Task.create(task_name, config)
+}
+
 module.exports = {
   tasks: _tasks,
   isTask: _isTask,
-  getTask: _getTask
+  getTask: _getTask,
+  createTask: _createTask
 }

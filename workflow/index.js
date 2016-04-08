@@ -36,9 +36,8 @@ const execute = function(args, ignoreExecution) {
   }
 
   const tasks = []
-  const task  = Tasks.getTask(task_name)
   for (let t, i = 0, len = cfg.length; i < len ; i++) {
-    t = task.create(task_name, cfg[i])
+    t = Tasks.createTask(task_name, cfg[i])
     t.options.argv.replace(args)
     if (!ignoreExecution) t.execute()
     tasks.push(t)

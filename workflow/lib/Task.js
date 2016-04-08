@@ -55,7 +55,7 @@ class Task extends EventEmitter {
 
   /**
    * Set the name of task
-   * @param value
+   * @param {string} value
    */
   set name(value) {
     this._name = value
