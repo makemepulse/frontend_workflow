@@ -13,7 +13,8 @@ module.exports = {
     output: ['o', 'out'],
     compress: ['m', 'minify', 'min'],
     sourcemap: ['s', 'sourcemaps'],
-    verbose: ['v', 'debug']
+    verbose: ['v', 'debug'],
+    kill_pids: []
   },
   'default': {
     sourcemap: false,

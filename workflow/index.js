@@ -22,7 +22,11 @@ const execute = function(args, ignoreExecution) {
   const cfg       = config[task_name]
 
   if (!Tasks.isTask(task_name)) {
-    Print.log(`'${task_name}' is not a task.`, 'yellow')
+    if (packageJSON.scripts[task_name]) {
+      Print.log(`'${task_name}' is not a task, but a task from package.json.`, 'yellow')
+    } else {
+      Print.log(`'${task_name}' is not a task.`, 'yellow')
+    }
     return null
   }
 
@@ -76,6 +80,14 @@ if (packageJSON.workflow) {
 }
 
 /**
+ * By default, execute a task from parameters
+ */
+if (execute(process.argv.slice(2))) {
+  return
+}
+
+
+/**
  * Detect npm context
  * If multiple tasks are detected, execute each task
  *
@@ -106,35 +118,29 @@ if (packageJSON.workflow) {
  *    node workflow watcher -w
  *
  */
-const isNPM = !!(process.env.npm_package_name)
+const scripts  = packageJSON.scripts
+const commands = Argv.main.fetch()._
+let tasks      = []
 
-if (isNPM) {
-  const scripts  = packageJSON.scripts
-  const commands = Argv.main.fetch()._
-  let tasks      = []
+if (commands.length > 0) {
 
-  if (commands.length > 1) {
-    for (let len = commands.length, i = 0; i < len; i++) {
-      if (scripts.hasOwnProperty(commands[i])) {
-       tasks = Array.prototype.concat(tasks, execute(scripts[commands[i]].split(' ').slice(2), true))
-      }
+  Print.log(['Execute tasks :', commands.join(' ')], { is_array: true, color: 'white' })
+
+  for (let len = commands.length, i = 0; i < len; i++) {
+    if (scripts.hasOwnProperty(commands[i])) {
+      tasks = Array.prototype.concat(tasks, execute(scripts[commands[i]].split(' ').slice(2), true))
     }
-
-    // Clean array
-    let tmp = []
-    for (let ln = tasks.length, j = 0; j < ln; j++) {
-      if (tasks[j]) tmp.push(tasks[j])
-    }
-
-    // Execute the array of tasks
-    TaskManager.execute(tmp)
-
-    return
   }
 
-}
+  // Clean array
+  let tmp = []
+  for (let ln = tasks.length, j = 0; j < ln; j++) {
+    if (tasks[j]) tmp.push(tasks[j])
+  }
 
-/**
- * By default, execute a task from parameters
- */
-execute(process.argv.slice(2))
+
+  // Execute the array of tasks
+  TaskManager.execute(tmp)
+
+  return
+}

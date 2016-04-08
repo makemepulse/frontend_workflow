@@ -42,6 +42,6 @@
     "watchify": "^3.6.1"
   },
   "workflow": {
-    "development": "./workflow/config/tasks.js"
+    "config": "./workflow/config/tasks.js"
   }
 }

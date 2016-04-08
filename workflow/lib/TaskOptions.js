@@ -7,8 +7,7 @@ const _exports = [
   'output',
   'watch',
   'sourcemaps',
-  'compress',
-  'config_path'
+  'compress'
 ]
 
 /**
