@@ -5,41 +5,47 @@ const _tasks = {}
 _tasks['typescript'] = [
   {
     file: `./app/index.ts ./public/main.js`,
-    override_parameters: {
-      sourcemaps: false,
-      watch: false,
-      compress: false
-    }
+    options: {},
+    override_parameters: {}
   }
 ]
 
 _tasks['uglify'] = [
   {
-    file: `./public/main.js ./public/main.js`
+    file: `./public/main.js ./public/main.js`,
+    options: {},
+    override_parameters: {}
   }
 ]
 
 _tasks['stylus'] = [
   {
-    file: `./app/index.styl ./public/main.css`
+    file: `./app/index.styl ./public/main.css`,
+    options: {},
+    override_parameters: {}
   }
 ]
 
 _tasks['postcss'] = [
   {
-    file: `./app/index.css ./public/main.css`
+    file: `./app/index.css ./public/main.css`,
+    options: {},
+    override_parameters: {}
   }
 ]
 
 _tasks['sass'] = [
   {
-    file: `./app/index.sass ./public/main.css`
+    file: `./app/index.sass ./public/main.css`,
+    options: {},
+    override_parameters: {}
   }
 ]
 
 _tasks['watcher'] = [
   {
     file: './public/**/*',
+    options: {},
     override_parameters: {
       watch: true
     }
@@ -84,10 +90,17 @@ const browserify_options = {
 
 _tasks['browserify'] = [
   Object.assign({
-    file: `./app/index.js ./public/main.js`
+    file: `./app/index.js ./public/main.js`,
+    options: {},
+    override_parameters: {}
   }, browserify_options),
+
   Object.assign({
-    file: `./app/vendor/index.js ./public/vendor.js`
+    file: `./app/vendor/index.js ./public/vendor.js`,
+    options: {},
+    override_parameters: {
+      watch: false
+    }
   }, browserify_options)
 ]
 

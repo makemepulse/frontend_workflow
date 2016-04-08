@@ -62,7 +62,7 @@ class Browserify extends Task {
 
     const onError = function(err) {
       Print.log(`[${name}] Error`, 'red')
-      Print.log(err.message, true, 'red');
+      Print.log(err.message, true, 'red')
     }
 
     const onLog = function(msg) {
