@@ -2,6 +2,17 @@
 
 Set of javascript tasks for front development
 
+## Summary
+
+* [Available tasks](#available-tasks)
+* [Task execution](#task-execution)
+* [Parameters](#parameters)
+* [Configuration](#configuration)
+* [Task](#task)
+    * [Task class](#task-class)
+    * [TaskProcess class](#taskprocess-class)
+* [Template](#template)
+
 ## Available tasks
 
 Available tasks :
@@ -17,7 +28,7 @@ Available tasks :
 * [`watcher`](https://github.com/paulmillr/chokidar)
 * [`template`](#template)
 
-### Tasks execution
+## Tasks execution
 
 ```
 node workflow stylus -w -m -s
@@ -34,6 +45,7 @@ You can call scripts declared inside `package.json`, if the task does not exist 
 ```
 node workflow stylus:compile browserify:compile
 ```
+
 
 ## Parameters
 
@@ -124,7 +136,7 @@ module.exports = _tasks
 
 To create a new task, you have to choose between a `Task` object and a `TaskProcess` process. A `TaskProcess` extends `Task`. It is dedicated to child process execution.
 
-#### [Task class]()
+#### Task class
 
 
 ```js
@@ -160,7 +172,7 @@ module.exports = MyTask
 **WARNING** Take care to call `super.execute()` at the end otherwise your task will be not registered inside the `TaskManager`
 
 
-##### Example
+**Exemple :**
 
 ```js
 const Task = require('./../lib/Task')
@@ -215,7 +227,7 @@ class Watcher extend Task {
 module.exports = Watcher
 ```
 
-#### [TaskProcess]()
+#### TaskProcess class
 
 
 ```js
@@ -236,7 +248,7 @@ class MyTaskProcess extend TaskProcess {
 module.exports = MyTaskProcess
 ```
 
-##### Example
+**Exemple :**
 
 ```js
 const TaskProcess       = require('./../lib/TaskProcess')
@@ -333,7 +345,7 @@ To generate a template :
 node workflow {{ template }} {{ name }}
 ```
 
-Exemple:
+**Exemple :**
 
 ```
 node workflow section MySectionName
