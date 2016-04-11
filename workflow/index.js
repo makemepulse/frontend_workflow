@@ -3,7 +3,7 @@ const path        = require('path')
 const Argv        = require('./lib/Argv')
 const Print       = require('./lib/Print')
 const TaskManager = require('./lib/TaskManager')
-let config        = require('./config/tasks')
+let config        = require('./lib/Config')
 const Tasks       = require('./tasks')
 const packageJSON = require('../package.json')
 
@@ -23,9 +23,9 @@ const execute = function(args, ignoreExecution) {
 
   if (!Tasks.isTask(task_name)) {
     if (packageJSON.scripts[task_name]) {
-      Print.log(`'${task_name}' is not a task, but a task from package.json.`, 'yellow')
+      Print.log(`"${task_name}" is not a task, but a task from package.json.`)
     } else {
-      Print.log(`'${task_name}' is not a task.`, 'yellow')
+      Print.log(`"${task_name}" is not a task.`, 'yellow')
     }
     return null
   }
@@ -44,38 +44,6 @@ const execute = function(args, ignoreExecution) {
   }
 
   return tasks
-}
-
-/**
- * Use config file written inside package.json
- *
- * Inside package.json, you can precise a different config file per environment
- * eg.:
- *
- *    "workflow": {
- *      "production": "./workflow/production.js"
- *      "development": "./workflow/development.js"
- *    }
- *
- * To precise an environment :
- *
- *    "workflow": {
- *      "env": "production"
- *    }
- *
- *    OR
- *
- *    NODE_ENV=production node workflow browserify
- *
- * The environment by default is `development`
- *
- */
-if (packageJSON.workflow) {
-  const w   = packageJSON.workflow
-  const ENV = w['env'] || process.env.NODE_ENV || 'development'
-
-  if (w[ENV])           config = require(path.resolve(w[ENV]))
-  else if (w['config']) config = require(path.resolve(w['config']))
 }
 
 /**

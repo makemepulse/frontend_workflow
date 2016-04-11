@@ -20,14 +20,14 @@ class TaskManager extends EventEmitter {
   }
 
   activate() {
-    process.on('beforeExit', this._onBeforeExit)
+//    process.on('beforeExit', this._onBeforeExit)
     process.on('SIGINT', this._onBeforeExit)
     this.on('task:execute', this._onTaskExecute)
     this.on('task:kill', this._onTaskKill)
   }
 
   desactivate() {
-    process.off('beforeExit', this._onBeforeExit)
+//    process.off('beforeExit', this._onBeforeExit)
     process.off('SIGINT', this._onBeforeExit)
     this.off('task:execute', this._onTaskExecute)
     this.off('task:kill', this._onTaskKill)
@@ -113,7 +113,9 @@ class TaskManager extends EventEmitter {
           Print.log(`Execute task [${current_task.name}] (${index}/${len})`, 'white')
           try {
             current_task.execute()
-            if (current_task.getParameters().watch) _onNext() // Execute the next task if the current is a watcher
+            if (current_task.getParameters().watch) {
+              setTimeout(_onNext, 1000)  // Execute the next task if the current is a watcher
+            }
           } catch(e) {}
         } else {
           _onNext()

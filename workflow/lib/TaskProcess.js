@@ -14,7 +14,6 @@ class TaskProcess extends Task {
    * @private
    */
   _bindMethods() {
-    this.bind([ '_onClose' ])
     super._bindMethods()
   }
 
@@ -22,16 +21,14 @@ class TaskProcess extends Task {
    * Activate listeners
    */
   activate() {
-    this.ps.on('close', this._onClose)
-    super.activate()
+    this.ps.on('close', this._onExit)
   }
 
   /**
    * Desactivate listeners
    */
   desactivate() {
-    this.ps.removeListener('close', this._onClose)
-    super.desactivate()
+    this.ps.removeListener('close', this._onExit)
   }
 
   /**
@@ -59,7 +56,8 @@ class TaskProcess extends Task {
    * Call the super.kill method to dispatch 'kill' event and desactivate listeners
    * @private
    */
-  _onClose() {
+  _onExit() {
+    super._onExit()
     super.kill()
   }
 }
