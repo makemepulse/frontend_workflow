@@ -29,4 +29,7 @@ class SASS extends TaskProcess {
 
 }
 
+SASS.description = `An extension of CSS that adds power and elegance to the basic language. It allows to use variables, nested rules, mixins, inline imports, and more.
+Compile '.sass' and '.scss' file to '.css'`
+
 module.exports = SASS

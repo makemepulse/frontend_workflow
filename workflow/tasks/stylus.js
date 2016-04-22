@@ -72,4 +72,7 @@ class Stylus extends TaskProcess {
 
 }
 
+Stylus.description = `Stylus is a revolutionary new language, providing an efficient, dynamic, and expressive way to generate CSS. Supporting both an indented syntax and regular CSS style.
+Compile '.styl' to '.css'`
+
 module.exports = Stylus

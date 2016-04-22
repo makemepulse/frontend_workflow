@@ -7,16 +7,11 @@ const Bind         = require('./mixins/Bind')
 class TaskManager extends EventEmitter {
   constructor() {
     super()
-    Object.assign(this, Bind)
-    this.bindMethods()
+    Bind.assign(this, [ '_onTaskExecute', '_onTaskKill', '_onBeforeExit' ])
 
     this.tasks = {}
 
     this.activate()
-  }
-
-  bindMethods() {
-    this.bind([ '_onTaskExecute', '_onTaskKill', '_onBeforeExit' ])
   }
 
   activate() {

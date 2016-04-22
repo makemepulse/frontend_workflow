@@ -39,4 +39,6 @@ class Uglify extends TaskProcess {
 
 }
 
+Uglify.description = `Minify JS file`
+
 module.exports = Uglify

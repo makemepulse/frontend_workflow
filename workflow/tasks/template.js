@@ -103,4 +103,6 @@ class Template extends Task {
 
 }
 
+Template.description = 'Generate files'
+
 module.exports = Template

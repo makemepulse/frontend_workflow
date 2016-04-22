@@ -55,7 +55,7 @@ const _tasks = {}
 //_tasks['server'] = [
 //  {
 //    options: {
-//      files: ['./app/**/*', './public/**/*'],
+//      files: ['./public/**/*'],
 //      'no-open': true,
 //      server: './public'
 //    },
@@ -122,5 +122,7 @@ const _tasks = {}
 //    ]
 //  }
 //}]
+
+//_tasks['clean'] = [{}]
 
 module.exports = _tasks

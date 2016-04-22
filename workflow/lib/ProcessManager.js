@@ -10,20 +10,12 @@ const paths = require('./../config/paths')
 class ProcessManager {
 
   constructor() {
-    Object.assign(this, Bind)
-    this.bindMethods()
+    Bind.assign(this, [ '_onBeforeExit' ])
 
     this.processes = {}
 
     this.activate()
-    if (Argv.main.fetch().kill_pids) this._clean()
-  }
-
-  /**
-   * Bind methods with the object as context
-   */
-  bindMethods() {
-    this.bind([ '_onBeforeExit' ])
+    if (Argv.main.fetch().kill_pids) this.clean()
   }
 
   /**
@@ -90,9 +82,8 @@ class ProcessManager {
 
   /**
    * Kill all pids inside tmp/pids directory
-   * @private
    */
-  _clean() {
+  clean() {
     const files = fs.readdirSync( `${paths.pids_path}` )
     for (let filename, i = 0, len = files.length; i < len; i++) {
       filename = files[i]

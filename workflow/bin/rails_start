@@ -24,7 +24,7 @@ do
     exit
   fi
 
-  ## Start rails server and frontend watchers
-  rails s -b 0.0.0.0 & ( sleep 5 && cd frontend/ && npm start );
-
 done
+
+## Start rails server and frontend watchers
+rails s -b 0.0.0.0 & ( sleep 5 && cd frontend/ && npm start );

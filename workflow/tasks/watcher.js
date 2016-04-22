@@ -5,7 +5,7 @@ const bs    = require('browser-sync')
 const Print = require('./../lib/Print')
 const Task  = require('./../lib/Task')
 
-class Watch extends Task {
+class Watcher extends Task {
 
   constructor() {
     super(...arguments)
@@ -47,4 +47,6 @@ class Watch extends Task {
 
 }
 
-module.exports = Watch
+Watcher.description = 'Watch files'
+
+module.exports = Watcher

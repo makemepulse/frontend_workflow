@@ -6,7 +6,7 @@
  */
 
 module.exports = {
-  boolean: ['watch', 'compress', 'sourcemap', 'verbose', 'kill_pids'],
+  boolean: ['watch', 'compress', 'sourcemap', 'verbose', 'kill_pids', 'help'],
   alias: {
     input: ['i'],
     watch: ['w'],
@@ -14,13 +14,15 @@ module.exports = {
     compress: ['m', 'minify', 'min'],
     sourcemap: ['s', 'sourcemaps'],
     verbose: ['v', 'debug'],
-    kill_pids: []
+    kill_pids: [],
+    help: ['h']
   },
   'default': {
     sourcemap: false,
     compress: false,
     watch: false,
-    verbose: true,
-    kill_pids: true
+    verbose: false,
+    kill_pids: false,
+    help: false
   }
 }

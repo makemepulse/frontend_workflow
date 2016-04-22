@@ -20,21 +20,12 @@ class Task extends EventEmitter {
    */
   constructor(name, config) {
     super()
-    Object.assign(this, Bind)
-    this._bindMethods()
+    Bind.assign(this, [ '_onExit' ])
 
     this.options = new TaskOptions(config)
     this._name   = name || 'noname'
     this.guid    = guid()
     this.running = false
-  }
-
-  /**
-   * Bind methods with the object as context
-   * @private
-   */
-  _bindMethods() {
-    this.bind([ '_onExit' ])
   }
 
   /**
