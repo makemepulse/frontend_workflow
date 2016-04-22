@@ -123,4 +123,6 @@ const _tasks = {}
 //  }
 //}]
 
+//_tasks['clean'] = [{}]
+
 module.exports = _tasks
