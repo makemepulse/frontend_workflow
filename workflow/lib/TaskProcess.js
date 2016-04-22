@@ -10,14 +10,6 @@ class TaskProcess extends Task {
   }
 
   /**
-   * Bind methods with the object as context
-   * @private
-   */
-  _bindMethods() {
-    super._bindMethods()
-  }
-
-  /**
    * Activate listeners
    */
   activate() {
