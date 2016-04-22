@@ -1,5 +1,6 @@
 'use strict'
 const path        = require('path')
+const Help        = require('./lib/Help')
 const Argv        = require('./lib/Argv')
 const Print       = require('./lib/Print')
 const TaskManager = require('./lib/TaskManager')
@@ -31,7 +32,8 @@ const execute = function(args, ignoreExecution) {
   }
 
   if (!cfg) {
-    Print.log(`'${task_name}' is not configured.`, 'yellow')
+    Print.log(`Task "${task_name}" is not configured.`, 'yellow')
+    Print.log(`Please see workflow/config/tasks.js or your file configuration written in your package.json`, 'yellow')
     return null
   }
 
@@ -44,6 +46,10 @@ const execute = function(args, ignoreExecution) {
   }
 
   return tasks
+}
+
+if (Argv.main.fetch().help) {
+  return Help()
 }
 
 /**

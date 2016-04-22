@@ -29,4 +29,6 @@ class Server extends TaskProcess {
 
 }
 
+Server.description = `Start a HTTP server with BrowserSync`
+
 module.exports = Server

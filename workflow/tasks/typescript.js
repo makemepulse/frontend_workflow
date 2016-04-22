@@ -26,4 +26,7 @@ class Typescript extends TaskProcess {
 
 }
 
+Typescript.description = `TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
+Compile '.ts' file to '.js'`
+
 module.exports = Typescript
