@@ -90,7 +90,7 @@ class Template extends Task {
       pth = pth.join('/')
 
       // Override the output name if the config.ouput exists
-      output = config.output ? config.output + path.extname(pth) : params.name + path.extname(pth)
+      output = config.output ? config.output + path.extname(pth) : dstName + path.extname(pth)
 
       templatePaths.push({
         inputFile: pth,
