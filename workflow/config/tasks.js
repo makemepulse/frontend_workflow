@@ -115,7 +115,7 @@ const _tasks = {}
 //    ]
 //  },
 //  components: {
-//    destination_path: './public/components',
+//    destination_path: './app/components',
 //    files: [
 //      'stylus/section.styl',
 //      'js/section.js'
