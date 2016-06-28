@@ -16,6 +16,10 @@ let config        = require('../config/tasks')
  *      "development": "./workflow/development.js"
  *    }
  *
+ *    "workflow": {
+ *      "config": "./workflow/config/tasks.js"
+ *    }
+ *
  * To precise an environment :
  *
  *    "workflow": {
