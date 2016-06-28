@@ -10,6 +10,9 @@ const babelify   = require('babelify')
 const Print = require('./../lib/Print')
 const Task  = require('./../lib/Task')
 
+const _ = require('../lib/functions/object')
+
+
 class Browserify extends Task {
 
   constructor() {
@@ -70,6 +73,12 @@ class Browserify extends Task {
     }
 
     const onUpdate = bundle
+
+    // Force create a new cache
+    if (browserify_options.cache) {
+      browserify_options.cache = {}
+      browserify_options.packageCache = {}
+    }
 
     // Configure Browserify
     var b  = browserify(input, browserify_options)

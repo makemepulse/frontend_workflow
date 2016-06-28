@@ -97,10 +97,10 @@ _tasks['browserify'] = [
     {   
         /**
          * Precise a file name
-         * By default, this property is splitted to `input` and `output`
+         * By default, this property is splitted to `input` and `output` parameters
          * 
          * For example :         
-         *     "./app/index.js ./public/main.js"
+         *     file: "./app/index.js ./public/main.js"
          *
          *     equivalent to :
          *        

@@ -41,8 +41,12 @@ const execute = function(args, ignoreExecution) {
   for (let t, i = 0, len = cfg.length; i < len ; i++) {
     t = Tasks.createTask(task_name, cfg[i])
     t.options.argv.replace(args)
-    if (!ignoreExecution) t.execute()
+    // if (!ignoreExecution) t.execute()
     tasks.push(t)
+  }
+
+  if (!ignoreExecution) {
+    TaskManager.execute(tasks)
   }
 
   return tasks
