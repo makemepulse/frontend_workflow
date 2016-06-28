@@ -1,6 +1,6 @@
 {
   "name": "workflow",
-  "version": "1.3.6",
+  "version": "1.3.7",
   "description": "Set of javascript tasks for front development",
   "main": "workflow/index.js",
   "scripts": {

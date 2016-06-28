@@ -95,6 +95,9 @@ class TaskManager extends EventEmitter {
     let len          = tasks.length
     let index        = 0
 
+    // Sort tasks by no-watchers and watchers
+    tasks.sort(function(task) { return task.getParameters().watch })
+
     const _onNext = (function() {
       if (current_task) {
         this.removeListener('task:kill', _onNext)
