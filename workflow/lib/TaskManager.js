@@ -95,6 +95,9 @@ class TaskManager extends EventEmitter {
     let len          = tasks.length
     let index        = 0
 
+    // Sort tasks by no-watchers and watchers
+    tasks.sort(function(task) { return task.getParameters().watch })
+
     const _onNext = (function() {
       if (current_task) {
         this.removeListener('task:kill', _onNext)
@@ -105,13 +108,24 @@ class TaskManager extends EventEmitter {
         current_task = tasks.shift()
         if (current_task) {
           this.on('task:kill', _onNext)
-          Print.log(`Execute task [${current_task.name}] (${index}/${len})`, 'white')
+
+          const isWatching = current_task.getParameters().watch
+          let msg = `Execute task [${current_task.name}] (${index}/${len})`
+  
+          if (isWatching) {
+            msg += '. Watching...'
+          }
+
+          Print.log(msg, 'white')
+
           try {
             current_task.execute()
-            if (current_task.getParameters().watch) {
-              setTimeout(_onNext, 1000)  // Execute the next task if the current is a watcher
+            if (isWatching) {
+              setTimeout(_onNext, 1000) // Execute the next task if the current is a watcher
             }
-          } catch(e) {}
+          } catch(e) {
+            Print.log(e, 'red')
+          }
         } else {
           _onNext()
         }

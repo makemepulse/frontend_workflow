@@ -1,4 +1,5 @@
 const paths = require('./paths')
+const _ = require('../lib/functions/object')
 
 const _tasks = {}
 
@@ -23,6 +24,7 @@ const _tasks = {}
 //    file: `./app/index.styl ./public/main.css`,
 //    options: {},
 //    override_parameters: {}
+//    autoprefixer: {remove: false, browsers: ["ie 9", "last 2 versions", "safari 7"]}
 //  }
 //]
 
@@ -66,7 +68,7 @@ const _tasks = {}
 //]
 
 
-//const browserify_options = {
+// const browserify_options = {
 //  options: {
 //    cache: {},
 //    packageCache: {},
@@ -86,23 +88,21 @@ const _tasks = {}
 //      delay: 600
 //    }
 //  }
-//}
+// }
 
-//_tasks['browserify'] = [
-//  Object.assign({
-//    file: `./app/index.js ./public/main.js`,
-//    options: {},
-//    override_parameters: {}
-//  }, browserify_options),
-//
-//  Object.assign({
-//    file: `./app/vendor/index.js ./public/vendor.js`,
-//    options: {},
-//    override_parameters: {
-//      watch: false
-//    }
-//  }, browserify_options)
-//]
+// _tasks['browserify'] = [
+//   _.extend({
+//     file: `./app/index.js ./public/main.js`,
+//     override_parameters: {}
+//   }, browserify_options),
+
+//   _.extend({
+//     file: `./app/vendor/index.js ./public/vendor.js`,
+//     override_parameters: {
+//       watch: false
+//     }
+//   }, browserify_options)
+// ]
 
 //_tasks['template'] = [{
 //  section: {

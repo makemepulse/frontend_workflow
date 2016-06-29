@@ -41,8 +41,11 @@ const execute = function(args, ignoreExecution) {
   for (let t, i = 0, len = cfg.length; i < len ; i++) {
     t = Tasks.createTask(task_name, cfg[i])
     t.options.argv.replace(args)
-    if (!ignoreExecution) t.execute()
     tasks.push(t)
+  }
+
+  if (!ignoreExecution) {
+    TaskManager.execute(tasks)
   }
 
   return tasks
@@ -108,9 +111,6 @@ if (commands.length > 0) {
   for (let ln = tasks.length, j = 0; j < ln; j++) {
     if (tasks[j]) tmp.push(tasks[j])
   }
-
-  // Sort tasks by no-watchers and watchers
-  tmp.sort(function(task) { return task.getParameters().watch })
 
   // Execute the array of tasks
   TaskManager.execute(tmp)
