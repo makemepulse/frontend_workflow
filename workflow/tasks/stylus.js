@@ -53,7 +53,9 @@ class Stylus extends TaskProcess {
       command.push("--use");
       command.push(AUTOPREFIXER_PATH);
       command.push(`--with`);
-      command.push(`'${JSON.stringify(config.autoprefixer)}'`);
+      var stringified = JSON.stringify(config.autoprefixer);
+      stringified = stringified.replace(/\"/g, "\\\"");
+      command.push(`"${stringified}"`);
     }
 
     // import rupture
