@@ -9,7 +9,6 @@ const guid = function () {
       s4() + '-' + s4() + s4() + s4();
 }
 
-
 module.exports = {
   guid: guid,
   s4: s4

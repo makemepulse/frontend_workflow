@@ -3,7 +3,7 @@
 const fs    = require('fs')
 const exec  = require('child_process').exec
 const Print = require('./Print')
-const Argv  = require('./Argv')
+// const Argv  = require('./Argv')
 const Bind  = require('./mixins/Bind')
 const paths = require('./../config/paths')
 
@@ -15,7 +15,7 @@ class ProcessManager {
     this.processes = {}
 
     this.activate()
-    if (Argv.main.fetch().kill_pids) this.clean()
+    // if (Argv.main.fetch().kill_pids) this.clean()
   }
 
   /**

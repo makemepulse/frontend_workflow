@@ -41,4 +41,19 @@ if (packageJSON.workflow) {
   else if (w['config']) config = require(path.resolve(w['config']))
 }
 
+
+// If this is an array of files. Sort by files by task
+if (typeof config.length === 'number') {
+  const tasks = {}
+
+  for (let i = 0, len = config.length; i < len; i++) {
+    if (!tasks.hasOwnProperty(config[i].task)) {
+      tasks[config[i].task] = []
+    }
+    tasks[config[i].task].push(config[i])
+  }
+
+  config = tasks
+}
+
 module.exports = config

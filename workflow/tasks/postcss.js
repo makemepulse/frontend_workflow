@@ -10,7 +10,7 @@ const AUTOPREFIXER_PATH = path.join(path.dirname(require.resolve('autoprefixer')
 class PostCSS extends TaskProcess {
 
   execute() {
-    const params = this.getParameters()
+    const params = this.parameters
 
     const input  = params.input
     const output = params.output

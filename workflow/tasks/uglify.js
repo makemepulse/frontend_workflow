@@ -11,7 +11,7 @@ const UGLIFY_CLI = path.join(path.dirname(require.resolve('uglifyjs')), '..', 'b
 class Uglify extends TaskProcess {
 
   execute() {
-    const params = this.getParameters()
+    const params = this.parameters
 
     let input     = params.input
     const output  = params.output

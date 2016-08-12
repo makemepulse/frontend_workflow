@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 'use strict';
 
 const bs    = require('browser-sync')
@@ -15,9 +16,9 @@ class Watcher extends Task {
   execute() {
     super.execute()
 
-    const config  = this.getConfig()
-    const pattern = config.file
-    const options = config.options || {}
+    const params  = this.parameters
+    const pattern = params.file
+    const options = params.options || {}
 
     this.bs = bs.create()
 

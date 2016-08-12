@@ -2,7 +2,7 @@
 
 const path  = require('path')
 const paths = require('../config/paths')
-const fs = require('fs')
+const fs    = require('fs')
 
 const files  = fs.readdirSync(paths.tasks_path)
 const _tasks = []

@@ -1,28 +1,67 @@
-'use strict'
-
-/**
- * Parameters
- * Documentation (https://github.com/substack/subarg)
- */
+const Tasks = require('./tasks')
 
 module.exports = {
-  boolean: ['watch', 'compress', 'sourcemap', 'verbose', 'kill_pids', 'help'],
-  alias: {
-    input: ['i'],
-    watch: ['w'],
-    output: ['o', 'out'],
-    compress: ['m', 'minify', 'min'],
-    sourcemap: ['s', 'sourcemaps'],
-    verbose: ['v', 'debug'],
-    kill_pids: [],
-    help: ['h']
+
+  input: {
+    type: 'file',
+    aliases: [ 'i', 'in' ],
+    extensions: [ '.js', '.ts', '.sass', '.scss', '.styl' ]
   },
-  'default': {
-    sourcemap: false,
-    compress: false,
-    watch: false,
-    verbose: false,
-    kill_pids: false,
-    help: false
+
+  output: {
+    type: 'file',
+    aliases: [ 'o', 'out' ],
+    extensions: [ '.js', '.css' ]
+  },
+
+  watch: {
+    type: 'boolean',
+    aliases: [ 'w' ],
+    default: false
+  },
+
+  compress: {
+    type: 'boolean',
+    default: false,
+    aliases: [ 'm', 'min', 'minify' ]
+  },
+
+  sourcemap: {
+    type: 'boolean',
+    aliases: [ 's' ],
+    default: false
+  },
+
+  verbose: {
+    type: 'boolean',
+    default: false,
+    aliases: [ 'v', 'debug' ]
+  },
+
+  help: {
+    type: 'boolean',
+    default: false,
+    aliases: [ 'h' ]
+  },
+
+  kill_pids: {
+    type: 'boolean',
+    default: false,
+    aliases: [ 'kill', 'clean' ]
+  },
+
+  task: {
+    type: 'select',
+    aliases: [ 't', 'tsk' ],
+    values: Tasks.tasks,
+    first_argument: true
+  },
+
+  ENV: {
+    type: 'select',
+    default: 'development',
+    aliases: [ 'env', 'e' ],
+    values: [ 'production', 'staging', 'development' ]
   }
+
 }

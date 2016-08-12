@@ -13,8 +13,8 @@ const AUTOPREFIXER_PATH = path.dirname(require.resolve('autoprefixer-stylus'))
 class Stylus extends TaskProcess {
 
   execute() {
-    const params = this.getParameters()
-    const config = this.getConfig()
+    const params = this.parameters
+    const config = this.parameters.options
 
     const input = params.input
     let output  = params.output
@@ -49,11 +49,13 @@ class Stylus extends TaskProcess {
     command.push("--include-css");
 
     // import autoprefixer
-    if (config.autoprefixer) {
+    if (params.autoprefixer) {
       command.push("--use");
       command.push(AUTOPREFIXER_PATH);
       command.push(`--with`);
-      command.push(`'${JSON.stringify(config.autoprefixer)}'`);
+      var stringified = JSON.stringify(params.autoprefixer);
+      stringified = stringified.replace(/\"/g, "\\\"");
+      command.push(`"${stringified}"`);
     }
 
     // import rupture

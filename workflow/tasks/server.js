@@ -8,8 +8,7 @@ const BROWSER_SYNC_CLI = path.join(path.dirname(require.resolve('browser-sync'))
 class Server extends TaskProcess {
 
   execute() {
-    const config  = this.getConfig()
-    const options = config.options || {}
+    const options  = this.parameters.options || {}
 
     const command = [BROWSER_SYNC_CLI, 'start']
     let value = null

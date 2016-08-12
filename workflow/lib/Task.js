@@ -4,7 +4,7 @@ const EventEmitter = require('events').EventEmitter
 const guid         = require('./functions/guid').guid
 const Bind         = require('./mixins/Bind')
 const TaskManager  = require('./TaskManager')
-const TaskOptions  = require('./TaskOptions')
+const _            = require('./functions/object')
 
 /**
  * Create a task object
@@ -16,16 +16,17 @@ class Task extends EventEmitter {
   /**
    *
    * @param {string} name
-   * @param {Object} config
+   * @param {Object} parameters
    */
-  constructor(name, config) {
+  constructor(name, parameters) {
     super()
     Bind.assign(this, [ '_onExit' ])
 
-    this.options = new TaskOptions(config)
-    this._name   = name || 'noname'
-    this.guid    = guid()
-    this.running = false
+    this.parameters = _.clone(parameters)
+    this._name      = name || 'noname'
+    this.guid       = guid()
+    this.running    = false
+    this._setup()
   }
 
   /**
@@ -66,21 +67,21 @@ class Task extends EventEmitter {
     return this._name + '_' + this.guid.slice(0, 4)
   }
 
-  /**
-   * Get the task configuration
-   * @returns {Object}
-   */
-  getConfig() {
-    return this.options.getConfig()
-  }
+  // /**
+  //  * Get the task configuration
+  //  * @returns {Object}
+  //  */
+  // getConfig() {
+  //   return this.options.getConfig()
+  // }
 
-  /**
-   * Get the task parameters
-   * @returns {Object}
-   */
-  getParameters() {
-    return this.options.getParameters()
-  }
+  // /**
+  //  * Get the task parameters
+  //  * @returns {Object}
+  //  */
+  // getParameters() {
+  //   return this.options.getParameters()
+  // }
 
   /**
    * Execute the task
@@ -100,6 +101,14 @@ class Task extends EventEmitter {
     this.running = false
     if (typeof this.desactivate === 'function') this.desactivate()
     TaskManager.emit('task:kill', this)
+  }
+
+  _setup() {
+    if (this.parameters.file) {
+      const input_output     = this.parameters.file.split(' ')
+      this.parameters.input  = input_output[0]
+      this.parameters.output = input_output[1]
+    }
   }
 
   /**

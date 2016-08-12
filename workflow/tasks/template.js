@@ -26,7 +26,7 @@ class Template extends Task {
   execute() {
     super.execute()
 
-    const params = this.getParameters()
+    const params = this.parameters
     const argv   = params.argv
     const templateName = argv._[1]
     const dstName      = argv._[2]
@@ -52,7 +52,7 @@ class Template extends Task {
   }
 
   getConfig(templateName) {
-    const config = super.getConfig()
+    const config = this.parameters
     return config[templateName]
   }
 

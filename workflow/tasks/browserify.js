@@ -24,16 +24,16 @@ class Browserify extends Task {
     super.execute()
 
     // Configure
-    const params             = this.getParameters()
-    const config             = this.getConfig()
-    const browserify_options = config.options
+    const params             = this.parameters
+    const transforms         = params.transforms
+    const browserify_options = params.options
     const input              = params.input
     const output             = params.output
     const tmp_output         = `${__dirname}/../tmp/${path.basename(params.output)}`
     const name               = this.name
 
     browserify_options.debug              = params.sourcemaps
-    config.transforms.babelify.sourceMaps = params.sourcemaps ? 'inline' : false
+    transforms.babelify.sourceMaps = params.sourcemaps ? 'inline' : false
 
     // Check tmp_output directory exists
     fs.ensureDirSync(path.dirname(tmp_output))
@@ -86,14 +86,14 @@ class Browserify extends Task {
 
     // Configure Watchify
     if (params.watch) {
-      b = watchify(b, config.transforms.watchify)
+      b = watchify(b, transforms.watchify)
       b.on('update', onUpdate)
       b.on('log', onLog)
     }
 
     // Configure transforms
-    if (config.transforms.babelify) b.transform(babelify, config.transforms.babelify);
-    if (config.transforms.partialify) b.transform(partialify.alsoAllow(config.transforms.partialify));
+    if (transforms.babelify) b.transform(babelify, transforms.babelify);
+    if (transforms.partialify) b.transform(partialify.alsoAllow(transforms.partialify));
 
     // Start bundle
     this.b = b

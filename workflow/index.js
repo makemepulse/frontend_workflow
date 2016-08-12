@@ -1,119 +1,79 @@
 'use strict'
-const path        = require('path')
-const Help        = require('./lib/Help')
-const Argv        = require('./lib/Argv')
-const Print       = require('./lib/Print')
+
+const Task        = require('./tasks')
 const TaskManager = require('./lib/TaskManager')
-let config        = require('./lib/Config')
-const Tasks       = require('./tasks')
+const Print       = require('./lib/Print')
+const Config      = require('./lib/Config')
+const _           = require('./lib/functions/object')
 const packageJSON = require('../package.json')
 
-/**
- * Create and execute a task from parameters
- *
- * @param args {array} - List of parameters
- * @param ignoreExecution - To ignore the task execution
- * @returns {*}
- */
-const execute = function(args, ignoreExecution) {
-  ignoreExecution = ignoreExecution || false
+const parameters = process.argv.slice(2)
+const ARGParser  = require('./lib/ARGParser')
+ARGParser.config = require('./config/parameters')
 
-  const argv      = new Argv(args)
-  const task_name = argv.fetch()._[0]
-  const cfg       = config[task_name]
+const PARAMS = ARGParser.parse( parameters )
+const TASKS    = []
 
-  if (!Tasks.isTask(task_name)) {
-    if (packageJSON.scripts[task_name]) {
-      Print.log(`"${task_name}" is not a task, but a task from package.json.`)
-    } else {
-      Print.log(`"${task_name}" is not a task.`, 'yellow')
-    }
-    return null
+const add_task = function( params ) {
+  if (!Task.isTask( params.task )) {
+    Print.log(`"${params.task}" is not a task.`, 'yellow')
+    return
   }
 
-  if (!cfg) {
-    Print.log(`Task "${task_name}" is not configured.`, 'yellow')
-    Print.log(`Please see workflow/config/tasks.js or your file configuration written in your package.json`, 'yellow')
-    return null
-  }
-
-  const tasks = []
-  for (let t, i = 0, len = cfg.length; i < len ; i++) {
-    t = Tasks.createTask(task_name, cfg[i])
-    t.options.argv.replace(args)
-    tasks.push(t)
-  }
-
-  if (!ignoreExecution) {
-    TaskManager.execute(tasks)
-  }
-
-  return tasks
+  TASKS.push( Task.createTask(params.task, params) )
 }
 
-if (Argv.main.fetch().help) {
-  return Help()
+const add_tasks = function( params ) {
+  const tasks = Config[params.task]
+
+  if (!tasks || tasks.length === 0) {
+    Print.log(`"${params.task}" has no task.`, 'yellow')
+    return
+  }
+
+  for (let i = 0, len = tasks.length; i < len; i++) {
+    add_task( _.extend(params, tasks[i]) )
+  }
 }
 
-/**
- * By default, execute a task from parameters
- */
-if (execute(process.argv.slice(2))) {
-  return
+if (!PARAMS.input && !PARAMS.file && PARAMS.task) {
+
+
+
 }
 
+// Execute the command
+if (PARAMS.input || PARAMS.file)
+{
+  add_task( PARAMS )
+}
 
-/**
- * Detect npm context
- * If multiple tasks are detected, execute each task
- *
- * Inside package.json, you can replace the task name by a npm task name
- * eg.:
- *
- *    "scripts": {
- *      "browserify:compile": "node workflow browserify",
- *      "stylus:compile": "node workflow stylus",
- *      "compile": "node workflow stylus:compile browserify:compile"
- *    }
- *
- * By default, each task is executed one by one. If you want to execute your task
- * before the end of the previous, override the watcher parameter to `true` inside `tasks.js`.
- * eg.:
- *
- *    _tasks['watcher'] = [
- *      {
- *        file: './public/**',
- *        override_parameters: {
- *          watch: true
- *        }
- *      }
- *    ]
- *
- * Or add the watch option
- *
- *    node workflow watcher -w
- *
- */
-const scripts  = packageJSON.scripts
-const commands = Argv.main.fetch()._
-let tasks      = []
+// Execute a group of tasks
+else if (PARAMS.task && Task.isTask( PARAMS.task ) && Config.hasOwnProperty( PARAMS.task ))
+{
+  add_tasks( PARAMS )
+}
 
-if (commands.length > 0) {
+// Execute NPM tasks
+else {
 
-  for (let len = commands.length, i = 0; i < len; i++) {
-    if (scripts.hasOwnProperty(commands[i])) {
-      tasks = Array.prototype.concat(tasks, execute(scripts[commands[i]].split(' ').slice(2), true))
+  const CMD     = PARAMS._
+  const scripts = packageJSON.scripts
+  let params
+
+  for (let len = CMD.length, i = 0; i < len; i++) {
+    if (scripts.hasOwnProperty(CMD[i])) {
+      params = ARGParser.parse( scripts[CMD[i]].split(' ').slice(2) )
+      add_tasks( params )
+      params = null
     }
   }
 
-  // Clean array
-  let tmp = []
-  for (let ln = tasks.length, j = 0; j < ln; j++) {
-    if (tasks[j]) tmp.push(tasks[j])
-  }
+}
 
-  // Execute the array of tasks
-  TaskManager.execute(tmp)
-
+if (TASKS.length === 0) {
+  Print.log(`No task found`, 'yellow')
   return
 }
+
+TaskManager.execute(TASKS)

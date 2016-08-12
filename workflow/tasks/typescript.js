@@ -9,7 +9,7 @@ const TSC_CLI = path.join(path.dirname(require.resolve('typescript')), '..', 'bi
 class Typescript extends TaskProcess {
 
   execute() {
-    const params = this.getParameters()
+    const params = this.parameters
 
     const input  = params.input
     const output = params.output

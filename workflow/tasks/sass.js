@@ -6,7 +6,7 @@ const TaskProcess = require('../lib/TaskProcess')
 class SASS extends TaskProcess {
 
   execute() {
-    const params = this.getParameters()
+    const params = this.parameters
 
     const input  = params.input
     const output = params.output
