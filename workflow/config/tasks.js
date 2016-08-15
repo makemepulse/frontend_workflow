@@ -24,20 +24,6 @@
 // // process.stdout.on('error', process.exit);
 
 
-
-
-// const when = require('when')
-
-// let helloWorld = function(value) {
-//   return 'Hello ' + value
-// }
-
-// helloWorld = when.lift(helloWorld)
-
-// helloWorld('Chris').spread([function() {}, function() {}])
-
-// console.log(  )
-
 const _tasks = []
 
 _tasks.push({

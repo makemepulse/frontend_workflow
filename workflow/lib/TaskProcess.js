@@ -41,17 +41,9 @@ class TaskProcess extends Task {
   kill() {
     if (!this.running) return null
     if (this.ps) ProcessManager.killProcess(this.ps)
-  }
-
-  /**
-   * When the process is killed
-   * Call the super.kill method to dispatch 'kill' event and desactivate listeners
-   * @private
-   */
-  _onExit() {
-    super._onExit()
     super.kill()
   }
+
 }
 
 module.exports = TaskProcess

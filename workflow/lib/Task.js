@@ -90,6 +90,8 @@ class Task extends EventEmitter {
     if (this.running) return
     this.running = true
     if (typeof this.activate === 'function') this.activate()
+
+    this.emit('execute')
     TaskManager.emit('task:execute', this)
   }
 
@@ -100,6 +102,8 @@ class Task extends EventEmitter {
     if (!this.running) return
     this.running = false
     if (typeof this.desactivate === 'function') this.desactivate()
+
+    this.emit('kill')
     TaskManager.emit('task:kill', this)
   }
 

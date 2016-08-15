@@ -25,15 +25,16 @@ class Browserify extends Task {
 
     // Configure
     const params             = this.parameters
-    const transforms         = params.transforms
-    const browserify_options = params.options
+    const transforms         = params.transforms || {}
+    const browserify_options = params.options || {}
     const input              = params.input
     const output             = params.output
     const tmp_output         = `${__dirname}/../tmp/${path.basename(params.output)}`
     const name               = this.name
 
     browserify_options.debug              = params.sourcemaps
-    transforms.babelify.sourceMaps = params.sourcemaps ? 'inline' : false
+
+    if (transforms.babelify) transforms.babelify.sourceMaps = params.sourcemaps ? 'inline' : false
 
     // Check tmp_output directory exists
     fs.ensureDirSync(path.dirname(tmp_output))
