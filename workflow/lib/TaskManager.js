@@ -52,11 +52,13 @@ class TaskManager extends EventEmitter {
   }
 
   _onTaskExecute(task) {
-    this.register(task)
+    // this.register(task)
+    Print.verbose(`'${task.name}' is executed with success`, 'green')
   }
 
   _onTaskKill(task) {
-    this.unregister(task)
+    // this.unregister(task)
+    Print.verbose(`'${task.name}' is killed with success`, 'green')
   }
 
   _onBeforeExit() {
@@ -69,16 +71,14 @@ class TaskManager extends EventEmitter {
   }
 
   _hasTasks() {
-    let i = 0
-    for (let k in this.tasks) {
-      i++
-    }
-    return i !== 0
+    return Object.keys(this.tasks).length !== 0
   }
 
   _killAll() {
-    for (let k in this.tasks) {
-      this.tasks[k].kill()
+    for (const k in this.tasks) {
+      if (this.tasks.running) {
+        this.tasks[k].kill()
+      }
     }
   }
 
@@ -92,7 +92,7 @@ class TaskManager extends EventEmitter {
     // Execute the array of tasks, one by one
     const tasks      = taskOrTasks
     let current_task = null
-    let len          = tasks.length
+    const len        = tasks.length
     let index        = 0
 
     // Sort tasks by no-watchers and watchers

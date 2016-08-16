@@ -91,7 +91,7 @@ class ProcessManager {
         const PID = fs.readFileSync(`${paths.pids_path}/${filename}`, 'utf8')
         try {
           process.kill(PID, 'SIGINT')
-          Print.log(`Process ${PID} is killed (${action}.pid)`, 'yellow')
+          Print.log(`Process ${PID} is killed (${filename}.pid)`, 'yellow')
         } catch(e) {
           Print.log(`No process '${PID}' founded`, 'grey')
         }

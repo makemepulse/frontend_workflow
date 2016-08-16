@@ -316,9 +316,9 @@
 
 
 
-
-const Typescript = require('./tasks/typescript')
-const Browserify = require('./tasks/browserify')
+const TaskManager = require('./lib/TaskManager')
+const Typescript  = require('./tasks/typescript')
+const Browserify  = require('./tasks/browserify')
 
 const task0 = new Typescript('test_typescript', {
   input: './app/index.ts',
@@ -331,18 +331,55 @@ const task1 = new Browserify('test_browserify', {
   options: {}
 })
 
-task1.on('kill', function() {
-  console.log('Execute task0')
-  task0.execute()
-    console.log(task0.ps.killed)
-  task0.on('kill', function() {
-    setTimeout(function() {
-      console.log(task0.ps.killed)
-    }, 5000)
-  })
-})
-console.log('Execute task1')
-task1.execute()
+// task1.on('kill', function() {
+//   console.log('Execute task0')
+//   task0.execute()
+//     console.log(task0.ps.killed)
+//   task0.on('kill', function() {
+//     setTimeout(function() {
+//       console.log(task0.ps.killed)
+//     }, 5000)
+//   })
+// })
+// console.log('Execute task1')
+// task1.execute()
+
+
+// console.log(task0)
+// console.log(task1)
+
+const Sequence = (function() {
+
+  const _onStart = function() {
+    console.log('start')
+  }
+
+  const _onEnd = function() {
+    console.log('end')
+  }
+
+  return function() {
+    const tasks = []
+
+    for (const name in arguments) {
+      if (TaskManager.tasks.hasOwnProperty(name)) {
+        tasks.push( TaskManager.tasks[name] )
+      }
+    }
+
+    console.log(tasks)
+
+  }
+})()
+
+Sequence(['test_typescript', 'test_browserify'])
+
+
+
+
+
+
+
 
 
 

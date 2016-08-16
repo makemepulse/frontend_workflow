@@ -27,6 +27,8 @@ class Task extends EventEmitter {
     this.guid       = guid()
     this.running    = false
     this._setup()
+
+    TaskManager.register(this)
   }
 
   /**
