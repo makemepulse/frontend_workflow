@@ -40,6 +40,13 @@ _tasks.push({
   options: {}
 })
 
+_tasks.push({
+  file: '',
+  configPath: './workflow/config/webpack/development.js',
+  task: 'webpack',
+  options: {}
+})
+
 module.exports = _tasks
 
 // class Task {

@@ -1,1 +1,1 @@
-console.log('HELLOdsfd')
+console.log('from index.js')

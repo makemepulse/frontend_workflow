@@ -1,1 +1,1 @@
-console.log('from typescript')
+console.log('from index.ts')

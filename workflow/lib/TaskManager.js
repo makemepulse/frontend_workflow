@@ -71,7 +71,11 @@ class TaskManager extends EventEmitter {
   }
 
   _hasTasks() {
-    return Object.keys(this.tasks).length !== 0
+    let i = 0
+    for (let k in this.tasks) {
+      if (this.tasks[k].running) i++
+    }
+    return i !== 0
   }
 
   _killAll() {
