@@ -316,70 +316,216 @@
 
 
 
-const TaskManager = require('./lib/TaskManager')
-const Typescript  = require('./tasks/typescript')
-const Browserify  = require('./tasks/browserify')
+// const TaskManager = require('./lib/TaskManager')
+// const Typescript  = require('./tasks/typescript')
+// const Browserify  = require('./tasks/browserify')
 
-const task0 = new Typescript('test_typescript', {
-  input: './app/index.ts',
-  output: './public/main.ts.js'
-})
-
-const task1 = new Browserify('test_browserify', {
-  input: './app/index.js',
-  output: './public/main.b.js',
-  options: {}
-})
-
-// task1.on('kill', function() {
-//   console.log('Execute task0')
-//   task0.execute()
-//     console.log(task0.ps.killed)
-//   task0.on('kill', function() {
-//     setTimeout(function() {
-//       console.log(task0.ps.killed)
-//     }, 5000)
-//   })
+// const task0 = new Typescript('test_typescript', {
+//   input: './app/index.ts',
+//   output: './public/main.ts.js'
 // })
-// console.log('Execute task1')
-// task1.execute()
+
+// const task1 = new Browserify('test_browserify', {
+//   input: './app/index.js',
+//   output: './public/main.b.js',
+//   options: {}
+// })
+
+// // task1.on('kill', function() {
+// //   console.log('Execute task0')
+// //   task0.execute()
+// //     console.log(task0.ps.killed)
+// //   task0.on('kill', function() {
+// //     setTimeout(function() {
+// //       console.log(task0.ps.killed)
+// //     }, 5000)
+// //   })
+// // })
+// // console.log('Execute task1')
+// // task1.execute()
 
 
-// console.log(task0)
-// console.log(task1)
+// // console.log(task0)
+// // console.log(task1)
 
-const Sequence = (function() {
+// const Sequence = (function() {
 
-  const _onStart = function() {
-    console.log('start')
+//   const _onStart = function() {
+//     console.log('start')
+//   }
+
+//   const _onEnd = function() {
+//     console.log('end')
+//   }
+
+//   return function() {
+//     const tasks = []
+
+//     for (const name in arguments) {
+//       if (TaskManager.tasks.hasOwnProperty(name)) {
+//         tasks.push( TaskManager.tasks[name] )
+//       }
+//     }
+
+//     console.log(tasks)
+
+//   }
+// })()
+
+// Sequence(['test_typescript', 'test_browserify'])
+
+const when = require('when')
+
+const _tasks = {}
+
+class Task {
+
+  constructor(name, parameters) {
+    this._name      = name
+    this.parameters =  parameters
+    this.bind()
   }
 
-  const _onEnd = function() {
-    console.log('end')
+  bind() {
+    this.execute = this.execute.bind(this)
   }
 
-  return function() {
-    const tasks = []
+  execute(callback) {
+    return when.promise((resolve, reject) => {
+      console.log('Execute', this._name)
+      this._execute(resolve, this.parameters)
+    }).then(callback)
+  }
 
-    for (const name in arguments) {
-      if (TaskManager.tasks.hasOwnProperty(name)) {
-        tasks.push( TaskManager.tasks[name] )
-      }
+  _execute() {}
+
+  kill() {
+    console.log('Kill', this._name)
+  }
+
+}
+
+Task.register = function(name, fnOrObject, fnExecution) {
+
+  if (_tasks.hasOwnProperty(name)) {
+    console.warn(`Task '${name}' already registered.`)
+    return
+  }
+
+  let parameters = fnOrObject
+  if (typeof fnOrObject === 'function') {
+    parameters = fnOrObject() || parameters
+  }
+
+  _tasks[name] = new Task(name, parameters)
+
+  if (fnExecution) {
+    if (typeof fnExecution === 'function') {
+      _tasks[name]._execute = fnExecution
     }
 
-    console.log(tasks)
-
+    if (typeof fnExecution === 'string' && _tasks[fnExecution]) {
+      _tasks[name]._execute = _tasks[fnExecution]._execute
+    }
   }
-})()
 
-Sequence(['test_typescript', 'test_browserify'])
-
+}
 
 
 
 
+Task.register('serie', {}, function(resolve, reject) {
+  Task.execute(...this.parameters.tasks).done(function(value) {
+    resolve(value)
+  })
+})
+
+Task.register('parallel', {}, function(resolve, reject) {
+  Task.execute(this.parameters.tasks).done(function(value) {
+    resolve(value)
+  })
+})
 
 
 
 
 
+Task.register('task0', {
+  input: './app/index.js',
+  output: './public/main.js'
+}, function(resolve, parameters) {
+
+  setTimeout(function() {
+    resolve('task0')
+  }, 2000)
+
+})
+
+Task.register('task1', {
+  input: './app/index.ts',
+  output: './public/main.ts.js'
+}, function(resolve, parameters) {
+
+    setTimeout(function() {
+      resolve('task1')
+    }, 5000)
+
+})
+
+Task.register('task2', {
+  tasks: [ 'task0', 'task1' ]
+}, 'serie')
+
+
+Task.execute = function() {
+  let names = [...arguments]
+
+  let isParallel = false
+
+  if (names.length === 1 && Array.isArray(names[0])) {
+    names = names[0]
+    isParallel = true
+  }
+
+  const deepMap = function(value) {
+    if (Array.isArray(value)) {
+      return value.map(deepMap)
+    }
+    return _tasks[value] || value
+  }
+
+  const tasks = names.map(deepMap)
+  return isParallel ? Task.parallel(tasks) : Task.serie(tasks)
+
+}
+
+Task.serie = function(tasks) {
+
+  return when.reduce(tasks, function(results, task) {
+    return task.execute(function(value) {
+      results.push( value )
+      return results
+    })
+  }, [])
+
+}
+
+Task.parallel = function(tasks) {
+
+  return when.map(tasks, function(task) {
+    return task.execute(function( value ) {
+      return value
+    })
+  })
+
+}
+
+// Serie
+// Task.execute('task0', 'task1', 'task2').done(function() {
+//   console.log(arguments)
+// })
+
+// Parallel
+// Task.execute(['task0', 'task1', 'task2']).done(function() {
+//   console.log(arguments)
+// })
