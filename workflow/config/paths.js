@@ -10,12 +10,9 @@ module.exports = (function() {
 
   const paths = {
     workflow_path:  path.join(__dirname, '..'),
-    bin_path:       path.join(__dirname, '..', 'bin'),
-    tasks_path:     path.join(__dirname, '..', 'tasks'),
-    templates_path: path.join(__dirname, '..', 'templates'),
     tmp_path:       path.join(__dirname, '..', 'tmp'),
     pids_path:      path.join(__dirname, '..', 'tmp', 'pids'),
-    lib_path:       path.join(__dirname),
+    lib_path:       path.join(__dirname, '..', 'lib'),
   }
 
   // Create directories from paths

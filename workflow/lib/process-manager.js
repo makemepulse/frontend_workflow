@@ -2,20 +2,17 @@
 
 const fs    = require('fs')
 const exec  = require('child_process').exec
-const Print = require('./Print')
-const Argv  = require('./Argv')
-const Bind  = require('./mixins/Bind')
+const spawn = require('child_process').spawn
 const paths = require('./../config/paths')
 
 class ProcessManager {
 
   constructor() {
-    Bind.assign(this, [ '_onBeforeExit' ])
+    this._onBeforeExit = this._onBeforeExit.bind(this)
 
     this.processes = {}
 
     this.activate()
-    if (Argv.main.fetch().kill_pids) this.clean()
   }
 
   /**
@@ -34,41 +31,45 @@ class ProcessManager {
 
   /**
    * Execute a child process
-   * @param {string} psName - Name of the process
-   * @param {string} command - Command to execute
+   * @param {String} psName  - Name of the process
+   * @param {String} command - Command to execute
+   * @param {Object} options - List of options (stdio)
    * @returns {ChildProcess}
    */
-  executeProcess(psName, command) {
+  execute(psName, command, options) {
+    options = options || {}
+    options.stdio = options.stdio || 'inherit'
 
-    const ps     = exec(command)
-    ps.GUID      = psName
+    let split = Array.isArray(command) ? command : command.split(' ')
+    const cmd   = split.slice(0, 1)[0]
+    const args  = split.slice(1)
+
+    const ps  = spawn(cmd, args, {
+      env: Object.assign({ FORCE_COLOR: true }, process.env),
+      stdio: options.stdio
+    })
+    ps.GUID  = psName
     this._createTemporaryFile(ps)
 
-    ps.stdout.setEncoding('utf-8')
-    ps.stdout.on('data', function(data) {
-      data = Print.clean(data.toString('utf-8'))
-      Print.log([
-        Print.colors['magenta'](`[${psName}]`),
-        data
-      ], { is_array: true })
-    })
+    if (ps.stdout) {
+      ps.stdout.on('data', function(data) {
+        console.log(data.toString('utf-8'))
+      })
+    }
 
-    ps.stderr.on('data', function(data) {
-      data = Print.clean(data.toString('utf-8'))
-      Print.log([
-        Print.colors['red'](`[${psName}]`),
-        data
-      ], { is_array: true })
-    })
+    if (ps.stderr) {
+      ps.stderr.on('data', function(data) {
+        console.log(data.toString('utf-8'))
+      })
+    }
 
-    ps.on('close', (function(code){
-      Print.log(`[${psName}] child process exited with code ${code}`, code === 0 || code === null ? 'magenta' : 'red')
+    ps.on('exit', (function(code) {
       this._deleteTemporaryFile(this.processes[psName])
     }).bind(this))
 
     return ps
-
   }
+
 
   /**
    * Kill the child process
@@ -91,9 +92,9 @@ class ProcessManager {
         const PID = fs.readFileSync(`${paths.pids_path}/${filename}`, 'utf8')
         try {
           process.kill(PID, 'SIGINT')
-          Print.log(`Process ${PID} is killed (${action}.pid)`, 'yellow')
+          P.debug(`Process ${PID} is killed (${filename}.pid)`, 'yellow')
         } catch(e) {
-          Print.log(`No process '${PID}' founded`, 'grey')
+          P.debug(`No process '${PID}' founded`, 'grey')
         }
         fs.unlinkSync(`${paths.pids_path}/${filename}`)
       }
@@ -137,4 +138,3 @@ class ProcessManager {
 }
 
 module.exports = new ProcessManager
-

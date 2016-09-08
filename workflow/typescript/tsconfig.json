@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./app",
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": true,
+    "module": "es2015",
+    "traceResolution": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
