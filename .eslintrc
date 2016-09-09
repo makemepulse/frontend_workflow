@@ -21,6 +21,8 @@ globals:
   desc: true
   namespace: true
   complete: true
+  serie: true
+  parallel: true
 
 ecmaFeatures:
   arrowFunctions: true

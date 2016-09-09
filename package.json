@@ -1,17 +1,18 @@
 {
-  "name": "frontend_workflow3",
-  "version": "1.0.0",
+  "name": "frontend_workflow",
+  "version": "3.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "compile": "webpack --config ./starter/webpack/debug.js",
-    "watch": "webpack --config ./starter/webpack/development.js",
-    "build": "webpack --config ./starter/webpack/production.js"
+    "webpack:compile": "webpack --config ./workflow/webpack/debug.js",
+    "webpack:watch": "webpack --config ./workflow/webpack/development.js",
+    "webpack:build": "webpack --config ./workflow/webpack/production.js"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^0.24.0",
+    "eslint": "^3.4.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "fs-extra": "^0.30.0",
     "raw-loader": "^0.5.1",
