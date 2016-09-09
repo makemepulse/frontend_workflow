@@ -1,7 +1,6 @@
 'use strict'
 
 const fs    = require('fs')
-const exec  = require('child_process').exec
 const spawn = require('child_process').spawn
 const paths = require('./../config/paths')
 
@@ -32,15 +31,15 @@ class ProcessManager {
   /**
    * Execute a child process
    * @param {String} psName  - Name of the process
-   * @param {String} command - Command to execute
+   * @param {String} cmmnd   - Command to execute
    * @param {Object} options - List of options (stdio)
    * @returns {ChildProcess}
    */
-  execute(psName, command, options) {
+  execute(psName, cmmnd, options) {
     options = options || {}
     options.stdio = options.stdio || 'inherit'
 
-    let split = Array.isArray(command) ? command : command.split(' ')
+    const split = Array.isArray(cmmnd) ? cmmnd : cmmnd.split(' ')
     const cmd   = split.slice(0, 1)[0]
     const args  = split.slice(1)
 
@@ -63,7 +62,7 @@ class ProcessManager {
       })
     }
 
-    ps.on('exit', (function(code) {
+    ps.on('exit', (function() {
       this._deleteTemporaryFile(this.processes[psName])
     }).bind(this))
 

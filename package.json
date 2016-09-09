@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "webpack --config ./workflow/webpack/debug.js",
-    "watch": "webpack --config ./workflow/webpack/development.js",
-    "build": "webpack --config ./workflow/webpack/production.js"
+    "compile": "webpack --config ./starter/webpack/debug.js",
+    "watch": "webpack --config ./starter/webpack/development.js",
+    "build": "webpack --config ./starter/webpack/production.js"
   },
   "author": "",
   "license": "ISC",

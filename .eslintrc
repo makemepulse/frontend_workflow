@@ -10,13 +10,17 @@ globals:
   $: true
   jQuery: true
   Vue: true
-  NotificationCenter: true
   TimelineLite: true
   TweenLite: true
   Ease: true
-  UserData: true
-  ResultManager: true
-  FB: true
+
+  wk: true
+  task: true
+  command: true
+  exec: true
+  desc: true
+  namespace: true
+  complete: true
 
 ecmaFeatures:
   arrowFunctions: true

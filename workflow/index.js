@@ -1,41 +1,72 @@
-#!/usr/bin/env node
-
 'use strict'
 
-const ARGParser  = require('./lib/arg-parser')
-ARGParser.config = require('./config/parameters')
-const parameters = ARGParser.parse(process.argv.slice(2))
+require('./lib/workflow')
 
+namespace('hello', function() {
 
-// Get package.json scripts
-const fs   = require('fs');
-const path = require('path');
+  task('world', { async: true }, function( complete ) {
+    console.log('Hello World')
+    complete()
+  })
 
-let SCRIPTS        = {}
-let packageJSON    = {}
-const package_path = path.resolve('package.json');
+  command('bash', { async: true }, 'sleep 5')
+  command('plop', { async: true }, 'echo plop')
 
-if (fs.existsSync( package_path )) {
-  packageJSON = require(package_path)
-  SCRIPTS = packageJSON.scripts || {}
-}
+  task('ultime', ['hello:world', 'hello:bash', 'hello:plop'], function() {
+    console.log('ULTIME')
+  })
 
-// Register package.json scripts
-const TaskManager = require('./lib/task-manager')
+  // namespace('world', function() {
 
-for (const key in SCRIPTS) {
-  TaskManager.register(key, SCRIPTS[key])
-}
+  //   desc('Execute a hello world')
+  //   task('hello', function() {
+  //     console.log('Hello World')
+  //   })
 
-// Generate tasks for non-scripts from parameters
-const TASKS = parameters._._;
+  //   desc('Execute a surprise')
+  //   task('surprise', function() {
+  //     console.log('Surprise motherfucka')
+  //   })
 
-for (const i in TASKS) {
-  if (!TaskManager.tasks[TASKS[i]]) {
-    TASKS[i] = TaskManager.registerCommand(TASKS[i])
-  }
-}
+  //   task('plop', ['hello', 'surprise'], function() {
+  //     console.log('Surprise motherfucka')
+  //   })
 
-if (typeof TaskManager[parameters.sequence] === 'function') {
-  TaskManager[parameters.sequence](parameters._._)
-}
+  //   task('yolo', { async: true }, function() {
+  //     console.log('Yolo')
+  //   })
+
+  //   task('plouf', ['plop', 'yolo'], { async: true }, function() {
+  //     console.log('Surprise motherfucka')
+  //   })
+
+  // })
+
+})
+
+// serie( 'hello:ultime' )
+
+// const TaskManager = require('./lib/task-manager')
+// console.log(TaskManager.tasks)
+
+// TaskManager.parallel('hello', 'surprise')
+
+// const ARGParser  = require('./lib/arg-parser')
+// ARGParser.config = require('./config/parameters')
+// const parameters = ARGParser.parse(process.argv.slice(2))
+
+// const TaskManager = require('./lib/task-manager')
+// const SCRIPTS = require('./config/tasks')
+
+// // Generate tasks for non-scripts from parameters
+// const TASKS = parameters._._;
+
+// for (const i in TASKS) {
+//   if (!TaskManager.tasks[TASKS[i]]) {
+//     TASKS[i] = TaskManager.registerCommand(TASKS[i])
+//   }
+// }
+
+// if (typeof TaskManager[parameters.sequence] === 'function' && parameters._._.length > 0) {
+//   TaskManager[parameters.sequence](parameters._._)
+// }

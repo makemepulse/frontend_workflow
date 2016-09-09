@@ -25,17 +25,6 @@ class Parser {
     this._checkers[name] = checkFn
   }
 
-  invalideParse( parameters ) {
-
-    if (!this.config) {
-      console.warn('No configuration found')
-      return
-    }
-
-    const result = this.softParse(parameters.slice(0))
-
-  }
-
   parse( parameters, type ) {
     if (!this.config) {
       console.warn('No configuration found')
@@ -143,6 +132,8 @@ class Parser {
   }
 
   _getKeyValue(parameters) {
+    if (parameters.length === 0) return { _: {} }
+
     const object = {}
     let params   = parameters.join('=').split('=')
 
