@@ -3,12 +3,7 @@
   "version": "3.0.0",
   "description": "",
   "main": "lib/index.js",
-  "scripts": {
-    "webpack:compile": "webpack --config ./workflow/webpack/debug.js",
-    "webpack:watch": "webpack --config ./workflow/webpack/development.js",
-    "webpack:build": "webpack --config ./workflow/webpack/production.js"
-  },
-  "author": "",
+  "author": "FuriouZz",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^3.4.0",
