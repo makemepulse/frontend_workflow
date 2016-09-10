@@ -5,9 +5,11 @@
   "main": "lib/index.js",
   "author": "FuriouZz",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "chalk": "^1.1.3",
     "eslint": "^3.4.0",
     "fs-extra": "^0.30.0",
+    "sanitize-filename": "^1.6.0",
     "when": "^3.7.7"
   }
 }
