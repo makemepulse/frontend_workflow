@@ -7,13 +7,6 @@ rules:
   prefer-const: 2
 
 globals:
-  $: true
-  jQuery: true
-  Vue: true
-  TimelineLite: true
-  TweenLite: true
-  Ease: true
-
   wk: true
   task: true
   command: true
