@@ -6,7 +6,7 @@ namespace('message', function() {
     console.log('Hello World')
     setTimeout(function() {
       complete()
-    })
+    }, 5000)
   })
 
   task('surprise', function() {
