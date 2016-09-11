@@ -1,4 +1,7 @@
 rules:
+  accessor-pairs: 1
+  array-callback-return: 2
+  block-scoped-var: 2
   indent: 0
   quotes: 0
   linebreak-style: [2, "unix"]
@@ -10,7 +13,7 @@ globals:
   wk: true
   task: true
   command: true
-  exec: true
+  run: true
   desc: true
   namespace: true
   complete: true
