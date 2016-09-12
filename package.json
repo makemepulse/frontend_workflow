@@ -3,46 +3,11 @@
   "version": "1.3.9",
   "description": "Set of javascript tasks for front development",
   "main": "workflow/index.js",
-  "scripts": {
-    "test": "mocha workflow/test",
-    "stylus:compile": "node workflow stylus -s",
-    "stylus:watch": "node workflow stylus -s -w",
-    "stylus:build": "node workflow stylus -m",
-    "browserify:compile": "node workflow browserify -s",
-    "browserify:watch": "node workflow browserify -s -w",
-    "browserify:build": "node workflow browserify -m",
-    "watcher": "node workflow watcher",
-    "server": "node workflow server",
-    "uglify": "node workflow uglify",
-    "compile": "node workflow stylus:compile browserify:compile",
-    "watch": "node workflow stylus:watch browserify:watch watcher",
-    "build": "node workflow stylus:build browserify:build uglify",
-    "start": "node workflow stylus:watch browserify:watch server"
-  },
+  "scripts": {},
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "autoprefixer": "^6.3.3",
-    "autoprefixer-stylus": "^0.8.1",
-    "babel-polyfill": "^6.3.14",
-    "babelify": "^6.1.3",
-    "browser-sync": "^2.10.0",
-    "browserify": "^12.0.1",
-    "colors": "^1.1.2",
-    "eslint": "^2.2.0",
-    "fs-extra": "^0.26.2",
-    "mocha": "^2.4.5",
-    "mustache": "^2.2.0",
-    "partialify": "^3.1.5",
-    "postcss-cli": "^2.5.1",
-    "rupture": "^0.6.1",
-    "stylus": "^0.52.4",
-    "subarg": "^1.0.0",
-    "typescript": "^1.8.9",
-    "uglifyjs": "^2.4.10",
-    "watchify": "^3.6.1"
-  },
-  "workflow": {
-    "config": "./workflow/config/tasks.js"
+    "eslint": "^3.5.0",
+    "jake": "^8.0.12"
   }
 }

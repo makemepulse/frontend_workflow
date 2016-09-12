@@ -18,6 +18,13 @@ globals:
   ResultManager: true
   FB: true
 
+  desc: true
+  task: true
+  namespace: true
+  jake: true
+  command: true
+  complete: true
+
 ecmaFeatures:
   arrowFunctions: true
   binaryLiterals: true
