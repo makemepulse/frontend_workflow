@@ -91,17 +91,17 @@ const _tasks = {}
 // }
 
 // _tasks['browserify'] = [
-//   _.extend( browserify_options, {
+//   _.extend({
 //     file: `./app/index.js ./public/main.js`,
 //     override_parameters: {}
-//   }),
+//   }, browserify_options),
 
-//   _.extend( browserify_options, {
+//   _.extend({
 //     file: `./app/vendor/index.js ./public/vendor.js`,
 //     override_parameters: {
 //       watch: false
 //     }
-//   })
+//   }, browserify_options)
 // ]
 
 //_tasks['template'] = [{
